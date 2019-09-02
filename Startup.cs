@@ -57,9 +57,11 @@ namespace dotnetcore_webapi_and_ravendb
             // This will instantiate a communication channel between application and the RavenDB server instance.
             services.AddSingleton<IDocumentStore>(provider =>
             {
-                var clientCertificatePath = @"{path_to_your_client_certificate_pfx_file}";
-                var databaseName = "{database_name}";
-                var databaseUrl = "{database_url}";
+                string physicalWebRootPath = HostingEnvironment.ContentRootPath;
+
+                var clientCertificatePath = physicalWebRootPath + "/free.connectsys.client.certificate.pfx";
+                var databaseName = "connectsyserp";
+                var databaseUrl = "https://a.free.connectsys.ravendb.cloud";
 
                 // Load certificate
                 var clientCertificate = new X509Certificate2(clientCertificatePath);
