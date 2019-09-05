@@ -1,7 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using dotnetcore_webapi_and_ravendb.Contracts;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Operations;
+using Raven.Client.Exceptions;
+using Raven.Client.Exceptions.Database;
+using Raven.Client.ServerWide;
+using Raven.Client.ServerWide.Operations;
 
 namespace dotnetcore_webapi_and_ravendb.Providers
 {
@@ -64,6 +70,35 @@ namespace dotnetcore_webapi_and_ravendb.Providers
             {
                 bool exists = await session.Advanced.ExistsAsync(entityId);
                 return exists;
+            }
+        }
+
+        public void EnsureDatabaseExists(string database = null, bool createDatabaseIfNotExists = true)
+        {
+            database = database ?? DocumentStore.Database;
+
+            if (string.IsNullOrWhiteSpace(database))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(database));
+
+            try
+            {
+                DocumentStore.Maintenance.ForDatabase(database).Send(new GetStatisticsOperation());
+                string[] databaseNames = DocumentStore.Maintenance.Server.Send(new GetDatabaseNamesOperation(0, 25));
+            }
+            catch (DatabaseDoesNotExistException)
+            {
+                if (createDatabaseIfNotExists == false)
+                    throw;
+
+                try
+                {
+                    DocumentStore.Maintenance.Server.Send(new CreateDatabaseOperation(new DatabaseRecord(database)));
+                }
+                catch (ConcurrencyException)
+                {
+                    // The database was already created before calling CreateDatabaseOperation
+                }
+
             }
         }
     }

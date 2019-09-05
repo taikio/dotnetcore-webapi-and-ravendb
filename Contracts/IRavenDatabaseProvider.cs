@@ -11,5 +11,6 @@ namespace dotnetcore_webapi_and_ravendb.Contracts
         Task<T> GetEntity<T>(string entityId);
         Task<List<T>> GetEntities<T>();
         Task<bool> IsEntityExists(string entityId);
+        void EnsureDatabaseExists(string database = null, bool createDatabaseIfNotExists = true);
     }
 }

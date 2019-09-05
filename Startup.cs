@@ -60,7 +60,7 @@ namespace dotnetcore_webapi_and_ravendb
                 string physicalWebRootPath = HostingEnvironment.ContentRootPath;
 
                 var clientCertificatePath = physicalWebRootPath + "/free.connectsys.client.certificate.pfx";
-                var databaseName = "connectsyserp";
+                var databaseName = "smartbudget";
                 var databaseUrl = "https://a.free.connectsys.ravendb.cloud";
 
                 // Load certificate

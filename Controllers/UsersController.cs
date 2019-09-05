@@ -24,38 +24,45 @@ namespace dotnetcore_webapi_and_ravendb.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody]InputUserRegistrationDto dto)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var userLoginId = LoginProvider.GenerateId(dto.Email);
+                if (await RavenDatabaseProvider.IsEntityExists(userLoginId))
+                {
+                    return BadRequest($"{nameof(dto.Email)} already exists.");
+                }
+
+                var user = new User
+                {
+                    FirstName = dto.FirstName,
+                    LastName = dto.LastName,
+                    Email = dto.Email,
+                    CreatedBy = "System",
+                    DateCreated = DateTime.UtcNow
+                };
+                await RavenDatabaseProvider.CreateEntity(user);
+
+                var loginDetails = new LoginDetails
+                {
+                    Id = userLoginId,
+                    UniqueId = dto.Email,
+                    UserId = user.Id,
+                    CreatedBy = "System",
+                    DateCreated = DateTime.UtcNow
+                };
+                LoginProvider.SetPassword(loginDetails, dto.Password);
+                await RavenDatabaseProvider.CreateEntity(loginDetails);
+
+                return Ok();
             }
-            var userLoginId = LoginProvider.GenerateId(dto.Email);
-            if (await RavenDatabaseProvider.IsEntityExists(userLoginId))
+            catch (Exception ex)
             {
-                return BadRequest($"{nameof(dto.Email)} already exists.");
+                return BadRequest(ex.Message);
             }
-
-            var user = new User
-            {
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                Email = dto.Email,
-                CreatedBy = "System",
-                DateCreated = DateTime.UtcNow
-            };
-            await RavenDatabaseProvider.CreateEntity(user);
-
-            var loginDetails = new LoginDetails
-            {
-                Id = userLoginId,
-                UniqueId = dto.Email,
-                UserId = user.Id,
-                CreatedBy = "System",
-                DateCreated = DateTime.UtcNow
-            };
-            LoginProvider.SetPassword(loginDetails, dto.Password);
-            await RavenDatabaseProvider.CreateEntity(loginDetails);
-
-            return Ok();
         }
 
         [HttpGet]
@@ -121,6 +128,67 @@ namespace dotnetcore_webapi_and_ravendb.Controllers
             };
 
             return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Bootstrap()
+        {
+            try
+            {
+                RavenDatabaseProvider.EnsureDatabaseExists("smartbudget", true);
+
+                InputUserRegistrationDto dto = new InputUserRegistrationDto
+                {
+                    FirstName = "Welker",
+                    LastName = "Arantes",
+                    Email = "welker3101@gmail",
+                    Password = "taikio3101",
+                    ConfirmPassword = "taikio3101"
+                };
+
+                /*
+                 *  public string FirstName { get; set; }
+                    public string LastName { get; set; }
+
+                    public string Email { get; set; }
+                    public string Password { get; set; }
+                    public string ConfirmPassword { get; set; }
+                 */
+
+                var userLoginId = LoginProvider.GenerateId(dto.Email);
+                //if (await RavenDatabaseProvider.IsEntityExists(userLoginId))
+                //{
+                //    return BadRequest($"{nameof(dto.Email)} already exists.");
+                //}
+
+                var user = new User
+                {
+                    FirstName = dto.FirstName,
+                    LastName = dto.LastName,
+                    Email = dto.Email,
+                    CreatedBy = "System",
+                    DateCreated = DateTime.UtcNow,
+                    Type = UserType.Admin
+                };
+                await RavenDatabaseProvider.CreateEntity(user);
+
+                var loginDetails = new LoginDetails
+                {
+                    Id = userLoginId,
+                    UniqueId = dto.Email,
+                    UserId = user.Id,
+                    CreatedBy = "System",
+                    DateCreated = DateTime.UtcNow
+                };
+                LoginProvider.SetPassword(loginDetails, dto.Password);
+                await RavenDatabaseProvider.CreateEntity(loginDetails);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
     }
