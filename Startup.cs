@@ -61,7 +61,7 @@ namespace dotnetcore_webapi_and_ravendb
 
                 var clientCertificatePath = physicalWebRootPath + "/free.connectsys.client.certificate.pfx";
                 var databaseName = "smartbudget";
-                var databaseUrl = "https://a.free.connectsys.ravendb.cloud";
+                var databaseUrl = Configuration.GetConnectionString("ConexaoRavenDB");
 
                 // Load certificate
                 var clientCertificate = new X509Certificate2(clientCertificatePath);
