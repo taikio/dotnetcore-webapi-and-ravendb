@@ -7,10 +7,19 @@ namespace dotnetcore_webapi_and_ravendb.Models.Sales
 {
     public class Customer
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string ShortName { get; set; }
-        public string Cpf { get; set; }
-        public string Email { get; set; }
+
+        public Customer(string name, string shortName, string cpf, string email)
+        {
+            Name = name;
+            ShortName = shortName;
+            Cpf = cpf;
+            Email = email;
+        }
+
+        public string Id { get; private set; }
+        public string Name { get; private set; }
+        public string ShortName { get; private set; }
+        public string Cpf { get; private set; }
+        public string Email { get; private set; }
     }
 }

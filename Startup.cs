@@ -6,8 +6,10 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Primitives;
 using dotnetcore_webapi_and_ravendb.Contracts;
+using dotnetcore_webapi_and_ravendb.Contracts.Sales;
 using dotnetcore_webapi_and_ravendb.Contracts.Lookups;
 using dotnetcore_webapi_and_ravendb.Providers;
+using dotnetcore_webapi_and_ravendb.Providers.Sales;
 using dotnetcore_webapi_and_ravendb.Providers.Lookups;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -59,6 +61,7 @@ namespace dotnetcore_webapi_and_ravendb
             services.AddScoped<IRefreshTokenProvider, RefreshTokenProvider>();
             services.AddScoped<IUserProvider, UserProvider>();
             services.AddScoped<ILookupsProvider, LookupsProvider>();
+            services.AddScoped<ICustomerProvider, CustomerProvider>();
 
             #endregion
             
