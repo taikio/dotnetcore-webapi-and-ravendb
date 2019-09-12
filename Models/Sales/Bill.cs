@@ -10,6 +10,11 @@ namespace dotnetcore_webapi_and_ravendb.Models.Sales
         public string Id { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
         public decimal Value { get; set; }
+        /// <summary>
+        /// Indica o tipo de conta
+        /// R = Receber
+        /// P = Pagar
+        /// </summary>
         public string Destiny { get; set; }
         public string Status { get; set; }
         public bool Paid { get; set; }

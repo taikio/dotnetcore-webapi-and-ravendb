@@ -9,9 +9,10 @@ namespace dotnetcore_webapi_and_ravendb.Models.Sales
     {
         public string Id { get; set; }
         public DateTime Date { get; set; }
-        public string Title { get; set; }
         public string Description { get; set; }
         public Customer Customer { get; set; }
         public Bill Bill { get; set; }
+        public DateTime? CancelDate { get; set; }
+        public bool IsCanceled { get; set; }
     }
 }
