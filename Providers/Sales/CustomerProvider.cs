@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using dotnetcore_webapi_and_ravendb.Contracts;
 using dotnetcore_webapi_and_ravendb.Contracts.Sales;
@@ -52,6 +53,13 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
                 
                 throw;
             }
+        }
+
+        public async Task<List<Customer>> GetAllCustomers()
+        {
+            var usersList = await _ravenDatabaseProvider.GetEntities<Customer>();
+
+            return usersList;
         }
     }
 }
