@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Primitives;
 using dotnetcore_webapi_and_ravendb.Contracts;
+using dotnetcore_webapi_and_ravendb.Contracts.Sales;
+using dotnetcore_webapi_and_ravendb.Contracts.Lookups;
 using dotnetcore_webapi_and_ravendb.Providers;
+using dotnetcore_webapi_and_ravendb.Providers.Sales;
+using dotnetcore_webapi_and_ravendb.Providers.Lookups;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,37 +52,64 @@ namespace dotnetcore_webapi_and_ravendb
                 options.AllowInsecureHttp = HostingEnvironment.IsDevelopment();
             });
 
+            #region BIND DEPENDENCE INJECTION
+
             services.AddScoped<AuthorizationProvider>();
             services.AddScoped<IRavenDatabaseProvider, RavenDBProvider>();
             services.AddScoped<IPasswordHasherProvider, PasswordHasherProvider>();
             services.AddScoped<ILoginProvider, LoginProvider>();
             services.AddScoped<IRefreshTokenProvider, RefreshTokenProvider>();
             services.AddScoped<IUserProvider, UserProvider>();
+            services.AddScoped<ILookupsProvider, LookupsProvider>();
+            services.AddScoped<ICustomerProvider, CustomerProvider>();
+
+            #endregion
+            
 
             // This will instantiate a communication channel between application and the RavenDB server instance.
             services.AddSingleton<IDocumentStore>(provider =>
             {
-                string physicalWebRootPath = HostingEnvironment.ContentRootPath;
 
-                var clientCertificatePath = physicalWebRootPath + "/free.connectsys.client.certificate.pfx";
-                var databaseName = "connectsyserp";
-                var databaseUrl = "https://a.free.connectsys.ravendb.cloud";
-
-                // Load certificate
-                var clientCertificate = new X509Certificate2(clientCertificatePath);
-
-                var store = new DocumentStore
+                if (Debugger.IsAttached)
                 {
-                    Certificate = clientCertificate,
-                    Database = databaseName,
-                    Urls = new[] { databaseUrl },
-                    Conventions =
+                    var store = new DocumentStore
                     {
-                        IdentityPartsSeparator = "-"
-                    }
-                };
-                store.Initialize();
-                return store;
+                        Database = "smartbudget",
+                        Urls = new[] { "http://localhost:8080" },
+                        Conventions =
+                        {
+                            IdentityPartsSeparator = "-"
+                        }
+                    };
+                    store.Initialize();
+                    return store;
+                }
+                else
+                {
+                    string physicalWebRootPath = HostingEnvironment.ContentRootPath;
+
+                    var clientCertificatePath = physicalWebRootPath + "/free.connectsys.client.certificate.pfx";
+                    var databaseName = "smartbudget";
+                    var databaseUrl = Configuration.GetConnectionString("ConexaoRavenDB");
+
+                    // Load certificate
+                    var clientCertificate = new X509Certificate2(clientCertificatePath);
+
+                    var store = new DocumentStore
+                    {
+                        Certificate = clientCertificate,
+                        Database = databaseName,
+                        Urls = new[] { databaseUrl },
+                        Conventions =
+                        {
+                            IdentityPartsSeparator = "-"
+                        }
+                    };
+                    store.Initialize();
+                    return store;    
+                }
+                
+                
             });
         }
 
