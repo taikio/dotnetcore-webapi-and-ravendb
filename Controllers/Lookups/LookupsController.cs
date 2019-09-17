@@ -9,15 +9,15 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Lookups
 {
     public class LookupsController : Controller
     {
-        
+        private readonly ICustomerProvider _customerProvider;
+
         public LookupsController(ILookupsProvider lookupsProvider, ICustomerProvider customerProvider)
         {
             _LookupsProvider = lookupsProvider;
-            customerProvider = _customerProvider;
+            _customerProvider = customerProvider;
         }
         
         public ILookupsProvider _LookupsProvider { get; set; }
-        public ICustomerProvider _customerProvider { get; set; }
 
         [HttpGet]
         [Authorize]
@@ -37,11 +37,11 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Lookups
 
         [HttpGet]
         [Authorize]
-        public IActionResult GetCustomers()
+        public async Task<IActionResult> GetCustomers()
         {
             try
             {
-                var listReturn = _customerProvider.GetAllCustomers();
+                var listReturn = await _customerProvider.GetAllCustomers();
 
                 return Ok(listReturn);
             }

@@ -145,22 +145,9 @@ namespace dotnetcore_webapi_and_ravendb.Controllers
                     Password = "taikio3101",
                     ConfirmPassword = "taikio3101"
                 };
-
-                /*
-                 *  public string FirstName { get; set; }
-                    public string LastName { get; set; }
-
-                    public string Email { get; set; }
-                    public string Password { get; set; }
-                    public string ConfirmPassword { get; set; }
-                 */
-
+                
                 var userLoginId = LoginProvider.GenerateId(dto.Email);
-                //if (await RavenDatabaseProvider.IsEntityExists(userLoginId))
-                //{
-                //    return BadRequest($"{nameof(dto.Email)} already exists.");
-                //}
-
+                
                 var user = new User
                 {
                     FirstName = dto.FirstName,
@@ -183,7 +170,7 @@ namespace dotnetcore_webapi_and_ravendb.Controllers
                 LoginProvider.SetPassword(loginDetails, dto.Password);
                 await RavenDatabaseProvider.CreateEntity(loginDetails);
 
-                return Ok();
+                return Ok("Setup configurado com sucesso!");
             }
             catch (Exception ex)
             {

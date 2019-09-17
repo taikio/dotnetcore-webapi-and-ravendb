@@ -17,10 +17,16 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> New(InputCustomerRegistrationDto customerDto)
+        public async Task<IActionResult> New([FromBody] InputCustomerRegistrationDto customerDto)
         {
             try
             {
+
+                if(!ModelState.IsValid)
+                {
+                    return BadRequest("Informações incompletas para o cadastro!");
+                }
+
                 Customer newCustomer = new Customer(customerDto.Name, customerDto.ShortName, customerDto.Cpf, customerDto.Email);
                 
                 await _customerProvider.NewCustomer(newCustomer);
@@ -30,6 +36,24 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
             catch (System.Exception)
             {
                 
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetList()
+        {
+            try
+            {
+                                
+                var customersList = await _customerProvider.GetAllCustomers();
+
+                return Ok(customersList);
+            }
+            catch (System.Exception)
+            {
+
                 return BadRequest();
             }
         }
