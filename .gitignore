@@ -2,3 +2,4 @@ obj
 bin
 /dotnetcore-webapi-and-ravendb.csproj.user
 /.vs/dotnetcore-webapi-and-ravendb
+*.pfx
