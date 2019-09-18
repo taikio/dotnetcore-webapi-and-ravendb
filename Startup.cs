@@ -62,6 +62,7 @@ namespace dotnetcore_webapi_and_ravendb
             services.AddScoped<IUserProvider, UserProvider>();
             services.AddScoped<ILookupsProvider, LookupsProvider>();
             services.AddScoped<ICustomerProvider, CustomerProvider>();
+            services.AddScoped<IServiceOrderProvider, ServiceOrderProvider>();
 
             #endregion
             

@@ -24,7 +24,7 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
 
                 if(!ModelState.IsValid)
                 {
-                    return BadRequest("Informações incompletas para o cadastro!");
+                    return BadRequest(ModelState);
                 }
 
                 Customer newCustomer = new Customer(customerDto.Name, customerDto.ShortName, customerDto.Cpf, customerDto.Email);

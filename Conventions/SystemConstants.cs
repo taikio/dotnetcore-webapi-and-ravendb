@@ -6,6 +6,11 @@ namespace dotnetcore_webapi_and_ravendb.Conventions
     {
         public static string BillDestinyReceive = "R";
         public static string BillDestinyPay = "P";
+
+        public static string BillStatus_EmAberto = "ATIVO";
+        public static string BillStatus_Vencido = "VENCIDO";
+        public static string BillStatus_Pago = "PAGO";
+        public static string BillStatus_Cancelado = "CANCELADO";
         
         public static PaymentMethod PaymentMethod_Money = new PaymentMethod
         {
