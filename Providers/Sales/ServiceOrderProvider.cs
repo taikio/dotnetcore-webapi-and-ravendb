@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Raven.Client.Documents;
 
 namespace dotnetcore_webapi_and_ravendb.Providers.Sales
 {
@@ -23,7 +24,7 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
         {
             try
             {
-                var paymentMethod = await _ravenDatabaseProvider.GetEntity<PaymentMethod>(serviceOrderDto.PaymentMethodId);
+                var paymentMethod = SystemConstants.ListPaymentMethods().FirstOrDefault(wh => wh.SysId == serviceOrderDto.PaymentMethodSysId);
                 var customer = await _ravenDatabaseProvider.GetEntity<Customer>(serviceOrderDto.CustomerId);
 
                 var bill = new Bill(
@@ -33,6 +34,8 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
                                 SystemConstants.BillStatus_EmAberto, 
                                 serviceOrderDto.DueDate
                                 );
+
+                await _ravenDatabaseProvider.CreateEntity(bill);
 
                 ServiceOrder serviceOrder = new ServiceOrder(DateTime.Now, serviceOrderDto.Description, customer, bill);
 
@@ -78,6 +81,32 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
             var serviceOrdersList = await _ravenDatabaseProvider.GetEntities<ServiceOrder>();
 
             return serviceOrdersList;
+        }
+        
+        public async Task<List<ServiceOrder>> GetServiceOrdersByDate(DateTime startDate, DateTime endDate)
+        {
+            var session = _ravenDatabaseProvider.GetSession();
+            try
+            {
+//                var listResult = from serviceOrder in session.Query<ServiceOrder>()
+//                    where serviceOrder.Date >= startDate.Date
+//                    where serviceOrder.Date <= endDate.Date
+//                    select serviceOrder;
+                startDate = startDate.AddHours(00).AddMinutes(00);
+                endDate = endDate.AddHours(23).AddMinutes(59).AddSeconds(59);
+                var listResult = session.Query<ServiceOrder>()
+                    .Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+
+                return listResult;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                session.Dispose();
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using dotnetcore_webapi_and_ravendb.Models.Sales;
+﻿using System.Collections.Generic;
+using dotnetcore_webapi_and_ravendb.Models.Sales;
 
 namespace dotnetcore_webapi_and_ravendb.Conventions
 {
@@ -29,5 +30,16 @@ namespace dotnetcore_webapi_and_ravendb.Conventions
             SysId = "BOLETO",
             Description = "Boleto Bancario"
         };
+
+        public static List<PaymentMethod> ListPaymentMethods()
+        {
+            var listReturn = new List<PaymentMethod>();
+            
+            listReturn.Add(PaymentMethod_Card);
+            listReturn.Add(PaymentMethod_Money);
+            listReturn.Add(PaymentMethod_Billet);
+
+            return listReturn;
+        }
     }
 }

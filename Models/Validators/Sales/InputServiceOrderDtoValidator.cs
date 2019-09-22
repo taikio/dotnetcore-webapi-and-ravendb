@@ -10,7 +10,7 @@ namespace dotnetcore_webapi_and_ravendb.Models.Validators.Sales
         {
             RuleFor(x => x.Description).NotEmpty().Length(0, 150);
             RuleFor(x => x.CustomerId).NotEmpty();
-            RuleFor(x => x.PaymentMethodId).NotEmpty();
+            RuleFor(x => x.PaymentMethodSysId).NotEmpty();
             RuleFor(x => x.Value).NotEmpty().GreaterThan(0);
             RuleFor(x => x.DueDate).NotEmpty().NotNull().GreaterThanOrEqualTo(DateTime.Now);
         }

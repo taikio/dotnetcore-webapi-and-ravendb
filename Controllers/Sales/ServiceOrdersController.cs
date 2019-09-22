@@ -40,5 +40,39 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
                 return BadRequest(ex.Message);
             }
         }
+        
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetList()
+        {
+
+            try
+            {
+                var listReturn = await _serviceOrderProvider.GetAllServiceOrders();
+
+                return Ok(listReturn);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetByDate(DateTime startDate, DateTime endDate)
+        {
+
+            try
+            {
+                var listReturn = await _serviceOrderProvider.GetServiceOrdersByDate(startDate, endDate);
+
+                return Ok(listReturn);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

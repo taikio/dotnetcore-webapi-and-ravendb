@@ -9,7 +9,7 @@ namespace dotnetcore_webapi_and_ravendb.Models.Dtos.SalesDtos
     {
         public string Description { get; set; }
         public string CustomerId { get; set; }
-        public string PaymentMethodId { get; set; }
+        public string PaymentMethodSysId { get; set; }
         public decimal Value { get; set; }
         public DateTime DueDate { get; set; }
     }

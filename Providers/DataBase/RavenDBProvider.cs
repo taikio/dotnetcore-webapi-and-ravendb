@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using dotnetcore_webapi_and_ravendb.Contracts;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations;
+using Raven.Client.Documents.Session;
 using Raven.Client.Exceptions;
 using Raven.Client.Exceptions.Database;
 using Raven.Client.ServerWide;
@@ -100,6 +101,18 @@ namespace dotnetcore_webapi_and_ravendb.Providers
                 }
 
             }
+        }
+
+        public IDocumentSession GetSession()
+        {
+            var session = DocumentStore.OpenSession();
+            return session;
+        }
+
+        public async Task CommitAsync(IAsyncDocumentSession session)
+        {
+            session.SaveChangesAsync();
+            session.Dispose();
         }
     }
 }
