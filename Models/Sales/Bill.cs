@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dotnetcore_webapi_and_ravendb.Conventions;
 
 namespace dotnetcore_webapi_and_ravendb.Models.Sales
 {
@@ -40,5 +41,11 @@ namespace dotnetcore_webapi_and_ravendb.Models.Sales
         /// </summary>
         public DateTime? ReversalDate { get; private set; }
         public DateTime? CancelDate { get; private set; }
+
+        public void CancelBill()
+        {
+            this.Status = SystemConstants.BillStatus_Cancelado;
+            this.CancelDate = DateTime.Now;
+        }
     }
 }

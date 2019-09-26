@@ -103,9 +103,9 @@ namespace dotnetcore_webapi_and_ravendb.Providers
             }
         }
 
-        public IDocumentSession GetSession()
+        public async Task<IAsyncDocumentSession>  GetSession()
         {
-            var session = DocumentStore.OpenSession();
+            var session = DocumentStore.OpenAsyncSession();
             return session;
         }
 

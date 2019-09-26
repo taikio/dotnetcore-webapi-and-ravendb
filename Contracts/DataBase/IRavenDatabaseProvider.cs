@@ -13,7 +13,7 @@ namespace dotnetcore_webapi_and_ravendb.Contracts
         Task<List<T>> GetEntities<T>();
         Task<bool> IsEntityExists(string entityId);
         void EnsureDatabaseExists(string database = null, bool createDatabaseIfNotExists = true);
-        IDocumentSession GetSession();
+        Task<IAsyncDocumentSession> GetSession();
         Task CommitAsync(IAsyncDocumentSession session);
     }
 }

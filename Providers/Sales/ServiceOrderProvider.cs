@@ -24,6 +24,7 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
         {
             try
             {
+                var session = await _ravenDatabaseProvider.GetSession();
                 var paymentMethod = SystemConstants.ListPaymentMethods().FirstOrDefault(wh => wh.SysId == serviceOrderDto.PaymentMethodSysId);
                 var customer = await _ravenDatabaseProvider.GetEntity<Customer>(serviceOrderDto.CustomerId);
 
@@ -35,17 +36,51 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
                                 serviceOrderDto.DueDate
                                 );
 
-                await _ravenDatabaseProvider.CreateEntity(bill);
+                await session.StoreAsync(bill);
 
                 ServiceOrder serviceOrder = new ServiceOrder(DateTime.Now, serviceOrderDto.Description, customer, bill);
 
-                await _ravenDatabaseProvider.CreateEntity(serviceOrder);
+                await session.StoreAsync(serviceOrder);
+                await _ravenDatabaseProvider.CommitAsync(session);
             }
             catch (System.Exception ex)
             {
 
-                throw;
+                throw ex;
             }
+        }
+
+        public async Task CancelServiceOrder(string serviceOrderId)
+        {
+            try
+            {
+                var session = await _ravenDatabaseProvider.GetSession();
+                var serviceOrder = await _ravenDatabaseProvider.GetEntity<ServiceOrder>(serviceOrderId);
+
+                if (serviceOrder == null)
+                    throw new Exception("Não existe uma ordem de serviço com o ID informado!");
+                
+                if (serviceOrder.IsCanceled)
+                    throw new Exception("A ordem de serviço já está cancelada!");
+
+                var bill = await _ravenDatabaseProvider.GetEntity<Bill>(serviceOrder.Bill.Id);
+
+                if (bill == null)
+                    throw new Exception("Não existe um lançamento financeiro vinculado a esta ordem de serviço!");
+                
+
+                serviceOrder.CancelServiceOrder();
+                bill.CancelBill();
+                
+                await session.StoreAsync(serviceOrder, serviceOrder.Id);
+                await session.StoreAsync(bill, bill.Id);
+                await _ravenDatabaseProvider.CommitAsync(session);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            
         }
 
         public async Task UpdateServiceOrder(ServiceOrder serviceOrder)
@@ -85,13 +120,10 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
         
         public async Task<List<ServiceOrder>> GetServiceOrdersByDate(DateTime startDate, DateTime endDate)
         {
-            var session = _ravenDatabaseProvider.GetSession();
+            var session = await _ravenDatabaseProvider.GetSession();
             try
             {
-//                var listResult = from serviceOrder in session.Query<ServiceOrder>()
-//                    where serviceOrder.Date >= startDate.Date
-//                    where serviceOrder.Date <= endDate.Date
-//                    select serviceOrder;
+                
                 startDate = startDate.AddHours(00).AddMinutes(00);
                 endDate = endDate.AddHours(23).AddMinutes(59).AddSeconds(59);
                 var listResult = session.Query<ServiceOrder>()

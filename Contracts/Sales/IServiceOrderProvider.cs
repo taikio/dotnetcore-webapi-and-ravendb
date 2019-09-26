@@ -12,5 +12,6 @@ namespace dotnetcore_webapi_and_ravendb.Contracts.Sales
         Task NewServiceOrder(InputServiceOrderDto serviceOrderDto);
         Task<List<ServiceOrder>> GetAllServiceOrders();
         Task<List<ServiceOrder>> GetServiceOrdersByDate(DateTime startDate, DateTime endDate);
+        Task CancelServiceOrder(string serviceOrderId);
     }
 }

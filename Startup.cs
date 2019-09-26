@@ -137,7 +137,7 @@ namespace dotnetcore_webapi_and_ravendb
             {
                 routes.MapRoute(
                     name: "api",
-                    template: "api/{controller}/{action}"
+                    template: "api/{controller}/{action}/{id?}"
                     );
 
                 routes.MapRoute(

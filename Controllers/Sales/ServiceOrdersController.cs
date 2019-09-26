@@ -74,5 +74,21 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Cancel(string id)
+        {
+            try
+            {
+                await _serviceOrderProvider.CancelServiceOrder(id);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

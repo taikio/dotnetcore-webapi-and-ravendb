@@ -22,5 +22,13 @@ namespace dotnetcore_webapi_and_ravendb.Models.Sales
         public Bill Bill { get; private set; }
         public DateTime? CancelDate { get; private set; }
         public bool IsCanceled { get; private set; }
+
+        public void CancelServiceOrder()
+        {
+            this.CancelDate = DateTime.Now;
+            this.IsCanceled = true;
+
+            this.Bill.CancelBill();
+        }
     }
 }
