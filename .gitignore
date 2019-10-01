@@ -4,3 +4,4 @@ bin
 /.vs/dotnetcore-webapi-and-ravendb
 *.pfx
 /.idea/.idea.dotnetcore-webapi-and-ravendb
+ClientApp/node_modules
