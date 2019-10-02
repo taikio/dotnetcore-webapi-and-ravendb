@@ -1,4 +1,5 @@
 ﻿using dotnetcore_webapi_and_ravendb.Contracts.Sales;
+using dotnetcore_webapi_and_ravendb.Conventions;
 using dotnetcore_webapi_and_ravendb.Models.Dtos.SalesDtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> New([FromBody] InputBillDto inputBillDto)
+        public async Task<IActionResult> NewPayable([FromBody] InputBillDto inputBillDto)
         {
 
             try
@@ -29,7 +30,29 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
                     return BadRequest(ModelState);
                 }
 
-                await _billProvider.NewBill(inputBillDto);
+                await _billProvider.NewBill(inputBillDto, SystemConstants.BillDestinyPay);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> NewReceivable([FromBody] InputBillDto inputBillDto)
+        {
+
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                await _billProvider.NewBill(inputBillDto, SystemConstants.BillDestinyReceive);
 
                 return Ok();
             }
@@ -49,6 +72,72 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
                 var listReturn = await _billProvider.GetBillsByDate(startDate, endDate, destiny);
 
                 return Ok(listReturn);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> PaymentMethod([FromBody] InputBillPaymentMethodDto inputBillDto)
+        {
+
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                await _billProvider.UpdatePaymentMethod(inputBillDto.Id, inputBillDto.PaymentMethodSysId);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> DueDate([FromBody] InputBillPaymentMethodDto inputBillDto)
+        {
+
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                await _billProvider.UpdatePaymentMethod(inputBillDto.Id, inputBillDto.PaymentMethodSysId);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> Value([FromBody] InputBillValueDto inputBillDto)
+        {
+
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                await _billProvider.UpdateValue(inputBillDto.Id, inputBillDto.Value);
+
+                return Ok();
             }
             catch (Exception ex)
             {

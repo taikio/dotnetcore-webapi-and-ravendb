@@ -71,24 +71,46 @@ namespace dotnetcore_webapi_and_ravendb
             // This will instantiate a communication channel between application and the RavenDB server instance.
             services.AddSingleton<IDocumentStore>(provider =>
             {
+                // if (Debugger.IsAttached)
+                // {
+                //     var store = new DocumentStore
+                //     {
+                //         Database = "smartbudget",
+                //         Urls = new[] { "http://localhost:8080" },
+                //         Conventions =
+                //         {
+                //             IdentityPartsSeparator = "-"
+                //         }
+                //     };
+                //     store.Initialize();
+                //     return store;
+                // }
+                // else
+                // {
+                //     string physicalWebRootPath = HostingEnvironment.ContentRootPath;
 
-                if (Debugger.IsAttached)
-                {
-                    var store = new DocumentStore
-                    {
-                        Database = "smartbudget",
-                        Urls = new[] { "http://localhost:8080" },
-                        Conventions =
-                        {
-                            IdentityPartsSeparator = "-"
-                        }
-                    };
-                    store.Initialize();
-                    return store;
-                }
-                else
-                {
-                    string physicalWebRootPath = HostingEnvironment.ContentRootPath;
+                //     var clientCertificatePath = physicalWebRootPath + "/free.connectsys.client.certificate.pfx";
+                //     var databaseName = "smartbudget";
+                //     var databaseUrl = Configuration.GetConnectionString("ConexaoRavenDB");
+
+                //     // Load certificate
+                //     var clientCertificate = new X509Certificate2(clientCertificatePath);
+
+                //     var store = new DocumentStore
+                //     {
+                //         Certificate = clientCertificate,
+                //         Database = databaseName,
+                //         Urls = new[] { databaseUrl },
+                //         Conventions =
+                //         {
+                //             IdentityPartsSeparator = "-"
+                //         }
+                //     };
+                //     store.Initialize();
+                //     return store;    
+                // }
+
+                 string physicalWebRootPath = HostingEnvironment.ContentRootPath;
 
                     var clientCertificatePath = physicalWebRootPath + "/free.connectsys.client.certificate.pfx";
                     var databaseName = "smartbudget";
@@ -108,8 +130,7 @@ namespace dotnetcore_webapi_and_ravendb
                         }
                     };
                     store.Initialize();
-                    return store;    
-                }
+                    return store;   
                 
                 
             });

@@ -18,12 +18,12 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
             _ravenDatabaseProvider = ravenDatabaseProvider;
         }
 
-        public async Task NewBill(InputBillDto inputBillDto)
+        public async Task NewBill(InputBillDto inputBillDto, string destiny)
         {
             try
             {
                 var paymentMethod = SystemConstants.ListPaymentMethods().FirstOrDefault(wh => wh.SysId == inputBillDto.PaymentMethodSysId);
-                var billDestiny = inputBillDto.Destiny.ToUpper() == SystemConstants.BillDestinyReceive
+                var billDestiny = destiny.ToUpper() == SystemConstants.BillDestinyReceive
                     ? SystemConstants.BillDestinyReceive
                     : SystemConstants.BillDestinyPay;
 
@@ -32,7 +32,8 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
                                 inputBillDto.Value,
                                 billDestiny,
                                 SystemConstants.BillStatus_EmAberto,
-                                inputBillDto.DueDate
+                                inputBillDto.DueDate,
+                                inputBillDto.Description
                                 );
 
                 await _ravenDatabaseProvider.CreateEntity<Bill>(bill);
@@ -41,7 +42,7 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
             {
                 throw ex;
             }
-        }
+        }       
 
         public async Task<List<Bill>> GetBillsByDate(DateTime startDate, DateTime endDate, string destiny)
         {
@@ -64,6 +65,88 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
             finally
             {
                 session.Dispose();
+            }
+        }
+
+        public async Task UpdatePaymentMethod(string id, string paymentMethodSysId)
+        {
+            try
+            {
+                var bill = await _ravenDatabaseProvider.GetEntity<Bill>(id);
+
+                if (bill == null)
+                {
+                    throw new Exception("Não foi encontrado nenhum lançamento financeiro com o id " + id);
+                }
+
+                var paymentMethod = SystemConstants.ListPaymentMethods().FirstOrDefault(x => x.SysId == paymentMethodSysId);
+                if (paymentMethod == null)
+                {
+                    throw new ArgumentException("Não foi incontrado um meio de pagamento válido!");
+                }
+
+                bill.UpdatePaymentMethod(paymentMethod);
+
+                await _ravenDatabaseProvider.UpdateEntity<Bill>(id, bill);
+            }
+            catch (Exception ex)
+            {
+                
+                throw ex;
+            }
+        }
+
+        public async Task UpdateDueDate(string id, DateTime dueDate)
+        {
+            try
+            {
+                var bill = await _ravenDatabaseProvider.GetEntity<Bill>(id);
+
+                if (bill == null)
+                {
+                    throw new Exception("Não foi encontrado nenhum lançamento financeiro com o id " + id);
+                }
+
+                if (dueDate < DateTime.MinValue || dueDate < DateTime.Now)
+                {
+                    throw new ArgumentException("A data de vencimento deve ser maior que a data atual!");
+                }
+
+                bill.UpdateDueDate(dueDate);
+
+                await _ravenDatabaseProvider.UpdateEntity<Bill>(id, bill);
+            }
+            catch (Exception ex)
+            {
+                
+                throw ex;
+            }
+        }
+
+        public async Task UpdateValue(string id, decimal value)
+        {
+            try
+            {
+                var bill = await _ravenDatabaseProvider.GetEntity<Bill>(id);
+
+                if (bill == null)
+                {
+                    throw new Exception("Não foi encontrado nenhum lançamento financeiro com o id " + id);
+                }
+
+                if (value <= 0)
+                {
+                    throw new ArgumentException("O valor deve ser maior que zero!");
+                }
+
+                bill.UpdateValue(value);
+
+                await _ravenDatabaseProvider.UpdateEntity<Bill>(id, bill);
+            }
+            catch (Exception ex)
+            {
+                
+                throw ex;
             }
         }
     }

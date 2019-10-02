@@ -33,7 +33,8 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
                                 serviceOrderDto.Value, 
                                 SystemConstants.BillDestinyReceive, 
                                 SystemConstants.BillStatus_EmAberto, 
-                                serviceOrderDto.DueDate
+                                serviceOrderDto.DueDate,
+                                serviceOrderDto.Description
                                 );
 
                 await session.StoreAsync(bill);
