@@ -42,7 +42,26 @@ namespace dotnetcore_webapi_and_ravendb.Models.Sales
         /// </summary>
         public DateTime? ReversalDate { get; private set; }
         public DateTime? CancelDate { get; private set; }
-        public string Description { get; private set;}
+        public string Description { get; private set; }
+
+        public virtual string ComputedStatus 
+        {
+            get 
+            {
+                var status = string.Empty;
+                
+                if (!this.Paid && this.Status == SystemConstants.BillStatus_EmAberto && this.DueDate < DateTime.Now)
+                {
+                    status = SystemConstants.BillStatus_Vencido;
+                }
+                else
+                {
+                    status = this.Status;
+                }
+
+                return status;
+            }
+        }
 
         public void CancelBill()
         {

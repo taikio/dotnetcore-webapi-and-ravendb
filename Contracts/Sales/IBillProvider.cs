@@ -14,5 +14,6 @@ namespace dotnetcore_webapi_and_ravendb.Contracts.Sales
         Task UpdatePaymentMethod(string id, string paymentMethodSysId);
         Task UpdateDueDate(string id, DateTime dueDate);
         Task UpdateValue(string id, decimal value);
+        Task Cancel(string id);
     }
 }

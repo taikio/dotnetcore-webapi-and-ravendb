@@ -149,5 +149,27 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
                 throw ex;
             }
         }
+
+        public async Task Cancel(string id)
+        {
+            try
+            {
+                var bill = await _ravenDatabaseProvider.GetEntity<Bill>(id);
+
+                if (bill == null)
+                {
+                    throw new Exception("Não foi encontrado nenhum lançamento financeiro com o id " + id);
+                }
+
+                bill.CancelBill();
+
+                 await _ravenDatabaseProvider.UpdateEntity<Bill>(id, bill);
+            }
+            catch (Exception ex)
+            {
+                
+                throw ex;
+            }
+        }
     }
 }
