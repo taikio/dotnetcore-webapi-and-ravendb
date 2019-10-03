@@ -79,6 +79,23 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
             }
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetList()
+        {
+
+            try
+            {
+                var listReturn = await _billProvider.GetAllBills();
+
+                return Ok(listReturn);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPut]
         [Authorize]
         public async Task<IActionResult> PaymentMethod([FromBody] InputBillPaymentMethodDto inputBillDto)
@@ -103,7 +120,7 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
 
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> DueDate([FromBody] InputBillPaymentMethodDto inputBillDto)
+        public async Task<IActionResult> DueDate([FromBody] InputBillDueDateDto inputBillDto)
         {
 
             try
@@ -113,7 +130,7 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
                     return BadRequest(ModelState);
                 }
 
-                await _billProvider.UpdatePaymentMethod(inputBillDto.Id, inputBillDto.PaymentMethodSysId);
+                await _billProvider.UpdateDueDate(inputBillDto.Id, inputBillDto.DueDate);
 
                 return Ok();
             }

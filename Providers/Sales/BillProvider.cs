@@ -3,6 +3,7 @@ using dotnetcore_webapi_and_ravendb.Contracts.Sales;
 using dotnetcore_webapi_and_ravendb.Conventions;
 using dotnetcore_webapi_and_ravendb.Models.Dtos.SalesDtos;
 using dotnetcore_webapi_and_ravendb.Models.Sales;
+using Raven.Client.Documents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,8 +54,11 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
                 endDate = endDate.AddHours(23).AddMinutes(59).AddSeconds(59);
                 destiny = destiny.ToUpper();
 
-                var listResult = session.Query<Bill>()
-                    .Where(x => x.DueDate >= startDate && x.DueDate <= endDate && x.Destiny == destiny).ToList();
+                //var listResult = await session.Query<Bill>()
+                //    .Where(x => x.DueDate >= startDate && x.DueDate <= endDate && x.Destiny == destiny).ToListAsync();
+
+                List<Bill> listResult = await session.Query<Bill>()
+                    .Where(x => x.DueDate >= startDate && x.DueDate <= endDate && x.Destiny == destiny).ToListAsync();
 
                 return listResult;
             }
@@ -66,6 +70,13 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
             {
                 session.Dispose();
             }
+        }
+
+        public async Task<List<Bill>> GetAllBills()
+        {
+            var serviceOrdersList = await _ravenDatabaseProvider.GetEntities<Bill>();
+
+            return serviceOrdersList;
         }
 
         public async Task UpdatePaymentMethod(string id, string paymentMethodSysId)

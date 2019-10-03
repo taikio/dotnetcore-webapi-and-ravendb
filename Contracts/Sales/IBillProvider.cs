@@ -11,6 +11,7 @@ namespace dotnetcore_webapi_and_ravendb.Contracts.Sales
     {
         Task NewBill(InputBillDto inputBillDto, string destiny);
         Task<List<Bill>> GetBillsByDate(DateTime startDate, DateTime endDate, string destiny);
+        Task<List<Bill>> GetAllBills();
         Task UpdatePaymentMethod(string id, string paymentMethodSysId);
         Task UpdateDueDate(string id, DateTime dueDate);
         Task UpdateValue(string id, decimal value);
