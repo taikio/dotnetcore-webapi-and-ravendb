@@ -4,6 +4,7 @@ using dotnetcore_webapi_and_ravendb.Conventions;
 using dotnetcore_webapi_and_ravendb.Models.Dtos.SalesDtos;
 using dotnetcore_webapi_and_ravendb.Models.Sales;
 using Raven.Client.Documents;
+using Sparrow.Platform.Posix.macOS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,7 +60,7 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
 
                 List<Bill> listResult = await session.Query<Bill>()
                     .Where(x => x.DueDate >= startDate && x.DueDate <= endDate && x.Destiny == destiny).ToListAsync();
-
+                
                 return listResult;
             }
             catch (Exception ex)
@@ -179,6 +180,61 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
             catch (Exception ex)
             {
                 
+                throw ex;
+            }
+        }
+
+        public async Task<OutputAccountBalanceDto> GetAccountBalance(DateTime startDate, DateTime endDate)
+        {
+            var session = await _ravenDatabaseProvider.GetSession();
+            try
+            {
+                startDate = startDate.AddHours(00).AddMinutes(00);
+                endDate = endDate.AddHours(23).AddMinutes(59).AddSeconds(59);
+
+                List<Bill> listBills = await session.Query<Bill>()
+                    .Where(x => x.DueDate >= startDate && x.DueDate <= endDate).ToListAsync();
+
+                var listResult = new OutputAccountBalanceDto();
+
+                listResult.IncomingPendingQuantity = listBills.Count(x => x.Destiny == SystemConstants.BillDestinyReceive && !x.Paid);
+                listResult.OutgoingPendingQuantity = listBills.Count(x => x.Destiny == SystemConstants.BillDestinyPay && !x.Paid);
+                listResult.IncomingPaidQuantity = listBills.Count(x => x.Destiny == SystemConstants.BillDestinyReceive && x.Paid);
+                listResult.OutgoingPaidQuantity = listBills.Count(x => x.Destiny == SystemConstants.BillDestinyPay && x.Paid);
+                listResult.IncomingPendingValue = listBills.Where(wh => wh.Destiny == SystemConstants.BillDestinyReceive && !wh.Paid).Sum(x => x.Value);
+                listResult.OutgoingPendingValue = listBills.Where(wh => wh.Destiny == SystemConstants.BillDestinyPay && !wh.Paid).Sum(x => x.Value);
+                listResult.IncomingPaidValue = listBills.Where(wh => wh.Destiny == SystemConstants.BillDestinyReceive && wh.Paid).Sum(x => x.Value);
+                listResult.OutgoingPaidValue = listBills.Where(wh => wh.Destiny == SystemConstants.BillDestinyPay && wh.Paid).Sum(x => x.Value);
+
+                return listResult;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                session.Dispose();
+            }
+        }
+
+        public async Task MakeRetirement(string billId)
+        {
+            try
+            {
+                var bill = await _ravenDatabaseProvider.GetEntity<Bill>(billId);
+
+                if (bill == null)
+                {
+                    throw new ArgumentException("Não foi encontrado um lançamento financeiro com o ID informado!");
+                }
+
+                bill.MakeRetirement();
+
+                await _ravenDatabaseProvider.UpdateEntity<Bill>(bill.Id, bill);
+            }
+            catch(Exception ex)
+            {
                 throw ex;
             }
         }

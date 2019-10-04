@@ -43,6 +43,9 @@ namespace dotnetcore_webapi_and_ravendb.Models.Sales
         public DateTime? ReversalDate { get; private set; }
         public DateTime? CancelDate { get; private set; }
         public string Description { get; private set; }
+        public string ServiceOrderId { get; private set; }
+
+        #region PROPRIEDADES VIRTUAIS
 
         public virtual string ComputedStatus 
         {
@@ -50,7 +53,7 @@ namespace dotnetcore_webapi_and_ravendb.Models.Sales
             {
                 var status = string.Empty;
                 
-                if (!this.Paid && this.Status == SystemConstants.BillStatus_EmAberto && this.DueDate < DateTime.Now)
+                if (!this.Paid && this.Status == SystemConstants.BillStatus_EmAberto && this.DueDate < DateTime.Now.Date)
                 {
                     status = SystemConstants.BillStatus_Vencido;
                 }
@@ -61,7 +64,11 @@ namespace dotnetcore_webapi_and_ravendb.Models.Sales
 
                 return status;
             }
-        }
+        }        
+
+        #endregion
+
+        #region MÉTODOS
 
         public void CancelBill()
         {
@@ -83,5 +90,27 @@ namespace dotnetcore_webapi_and_ravendb.Models.Sales
         {
             this.Value = newValue;
         }
+
+        public void SetServiceOrderId(string id)
+        {
+            if (string.IsNullOrEmpty(this.ServiceOrderId))
+            {
+                this.ServiceOrderId = id;
+            }
+        }
+
+        public void MakeRetirement()
+        {
+            this.Paid = true;
+            this.PayDay = DateTime.Now;
+            this.Status = SystemConstants.BillStatus_Pago;
+        }
+
+        public void ChangeDescription(string newDescription)
+        {
+            this.Description = newDescription;
+        }
+
+        #endregion
     }
 }

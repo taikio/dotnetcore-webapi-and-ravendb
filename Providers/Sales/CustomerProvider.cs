@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using dotnetcore_webapi_and_ravendb.Contracts;
 using dotnetcore_webapi_and_ravendb.Contracts.Sales;
+using dotnetcore_webapi_and_ravendb.Models.Dtos.SalesDtos;
 using dotnetcore_webapi_and_ravendb.Models.Sales;
 
 namespace dotnetcore_webapi_and_ravendb.Providers.Sales
@@ -14,30 +16,41 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
             _ravenDatabaseProvider = ravenDatabaseProvider;
         }
 
-        public async Task NewCustomer(Customer customer)
+        public async Task NewCustomer(InputCustomerRegistrationDto customerDto)
         {
             try
             {
-                await _ravenDatabaseProvider.CreateEntity(customer);
+                Customer newCustomer = new Customer(customerDto.Name, customerDto.ShortName, customerDto.Cpf);
+
+                await _ravenDatabaseProvider.CreateEntity(newCustomer);
             }
             catch (System.Exception ex)
             {
                 
-                throw;
+                throw ex;
             }
         }
 
-        public async Task UpdateCustomerInfo(Customer customer)
+        public async Task ChangeCustomerEmail(string id, string emailAddress)
         {
             
             try
             {
+                var customer = await _ravenDatabaseProvider.GetEntity<Customer>(id);
+
+                if (customer == null)
+                {
+                    throw new ArgumentException("Não foi encontrado um cliente com o ID informado!");
+                }
+
+                customer.ChangeEmail(emailAddress);
+
                 await _ravenDatabaseProvider.UpdateEntity(customer.Id, customer);
             }
             catch (System.Exception ex)
             {
                 
-                throw;
+                throw ex;
             }
         }
 

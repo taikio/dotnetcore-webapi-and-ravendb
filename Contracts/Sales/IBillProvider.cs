@@ -16,5 +16,7 @@ namespace dotnetcore_webapi_and_ravendb.Contracts.Sales
         Task UpdateDueDate(string id, DateTime dueDate);
         Task UpdateValue(string id, decimal value);
         Task Cancel(string id);
+        Task<OutputAccountBalanceDto> GetAccountBalance(DateTime startDate, DateTime endDate);
+        Task MakeRetirement(string billId);
     }
 }

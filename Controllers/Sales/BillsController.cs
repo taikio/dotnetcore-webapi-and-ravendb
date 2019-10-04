@@ -183,5 +183,39 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> AccountBalance(DateTime startDate, DateTime endDate)
+        {
+
+            try
+            {
+                var listReturn = await _billProvider.GetAccountBalance(startDate, endDate);
+
+                return Ok(listReturn);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> MakeRetirement(string id)
+        {
+            try
+            {
+                await _billProvider.MakeRetirement(id);
+
+                return 
+                    Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

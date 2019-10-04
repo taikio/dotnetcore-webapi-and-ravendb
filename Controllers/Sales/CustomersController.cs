@@ -26,10 +26,8 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
                 {
                     return BadRequest(ModelState);
                 }
-
-                Customer newCustomer = new Customer(customerDto.Name, customerDto.ShortName, customerDto.Cpf, customerDto.Email);
-                
-                await _customerProvider.NewCustomer(newCustomer);
+                             
+                await _customerProvider.NewCustomer(customerDto);
 
                 return Ok();
             }
@@ -50,6 +48,29 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
                 var customersList = await _customerProvider.GetAllCustomers();
 
                 return Ok(customersList);
+            }
+            catch (System.Exception)
+            {
+
+                return BadRequest();
+            }
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> Email([FromBody] InputCustomerEmailDto customerDto)
+        {
+            try
+            {
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                await _customerProvider.ChangeCustomerEmail(customerDto.Id, customerDto.Email);
+
+                return Ok();
             }
             catch (System.Exception)
             {

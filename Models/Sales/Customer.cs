@@ -8,12 +8,11 @@ namespace dotnetcore_webapi_and_ravendb.Models.Sales
     public class Customer
     {
 
-        public Customer(string name, string shortName, string cpf, string email)
+        public Customer(string name, string shortName, string cpf)
         {
             Name = name;
             ShortName = shortName;
-            Cpf = cpf;
-            Email = email;
+            Cpf = cpf;            
         }
 
         public string Id { get; private set; }
@@ -21,5 +20,14 @@ namespace dotnetcore_webapi_and_ravendb.Models.Sales
         public string ShortName { get; private set; }
         public string Cpf { get; private set; }
         public string Email { get; private set; }
+
+        #region MÉTODOS
+
+        public void ChangeEmail(string newEmail)
+        {
+            this.Email = newEmail;
+        }
+
+        #endregion
     }
 }
