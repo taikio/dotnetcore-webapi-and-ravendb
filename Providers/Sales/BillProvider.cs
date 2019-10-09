@@ -84,7 +84,8 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
         {
             try
             {
-                var bill = await _ravenDatabaseProvider.GetEntity<Bill>(id);
+                
+                var bill = await _ravenDatabaseProvider.GetEntity<Bill>(id);                
 
                 if (bill == null)
                 {
@@ -97,7 +98,19 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
                     throw new ArgumentException("Não foi incontrado um meio de pagamento válido!");
                 }
 
+                var session = await _ravenDatabaseProvider.GetSession();
+                var listServiceOrder = await session.Query<ServiceOrder>().Where(wh => wh.Bill.Id == bill.Id).ToListAsync();
+                var serviceOrder = listServiceOrder.FirstOrDefault();
+
                 bill.UpdatePaymentMethod(paymentMethod);
+
+                if (serviceOrder != null)
+                {
+                    serviceOrder.Bill.UpdatePaymentMethod(paymentMethod);
+                    await session.StoreAsync(serviceOrder, serviceOrder.Id);
+                    await session.SaveChangesAsync();
+                    session.Dispose();
+                }
 
                 await _ravenDatabaseProvider.UpdateEntity<Bill>(id, bill);
             }
