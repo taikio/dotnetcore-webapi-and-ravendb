@@ -80,12 +80,24 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
             return serviceOrdersList;
         }
 
+        public async Task<Bill> GetById(string id)
+        {
+            var serviceOrder = await _ravenDatabaseProvider.GetEntity<Bill>(id);
+
+            if (serviceOrder == null)
+            {
+                throw new ArgumentException($"Não foi encontrado um lançamento com o ID {id}");
+            }
+
+            return serviceOrder;
+        }
+
         public async Task UpdatePaymentMethod(string id, string paymentMethodSysId)
         {
             try
             {
-                
-                var bill = await _ravenDatabaseProvider.GetEntity<Bill>(id);                
+
+                var bill = await _ravenDatabaseProvider.GetEntity<Bill>(id);
 
                 if (bill == null)
                 {
@@ -98,18 +110,15 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
                     throw new ArgumentException("Não foi incontrado um meio de pagamento válido!");
                 }
 
-                var session = await _ravenDatabaseProvider.GetSession();
-                var listServiceOrder = await session.Query<ServiceOrder>().Where(wh => wh.Bill.Id == bill.Id).ToListAsync();
-                var serviceOrder = listServiceOrder.FirstOrDefault();
 
                 bill.UpdatePaymentMethod(paymentMethod);
 
-                if (serviceOrder != null)
+                if (!string.IsNullOrEmpty(bill.ServiceOrderId))
                 {
+                    var serviceOrder = await _ravenDatabaseProvider.GetEntity<ServiceOrder>(bill.ServiceOrderId);
+
                     serviceOrder.Bill.UpdatePaymentMethod(paymentMethod);
-                    await session.StoreAsync(serviceOrder, serviceOrder.Id);
-                    await session.SaveChangesAsync();
-                    session.Dispose();
+                    await _ravenDatabaseProvider.UpdateEntity<ServiceOrder>(serviceOrder.Id, serviceOrder);
                 }
 
                 await _ravenDatabaseProvider.UpdateEntity<Bill>(id, bill);
@@ -139,6 +148,14 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
 
                 bill.UpdateDueDate(dueDate);
 
+                if (!string.IsNullOrEmpty(bill.ServiceOrderId))
+                {
+                    var serviceOrder = await _ravenDatabaseProvider.GetEntity<ServiceOrder>(bill.ServiceOrderId);
+
+                    serviceOrder.Bill.UpdateDueDate(dueDate);
+                    await _ravenDatabaseProvider.UpdateEntity<ServiceOrder>(serviceOrder.Id, serviceOrder);
+                }
+
                 await _ravenDatabaseProvider.UpdateEntity<Bill>(id, bill);
             }
             catch (Exception ex)
@@ -166,6 +183,14 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
 
                 bill.UpdateValue(value);
 
+                if (!string.IsNullOrEmpty(bill.ServiceOrderId))
+                {
+                    var serviceOrder = await _ravenDatabaseProvider.GetEntity<ServiceOrder>(bill.ServiceOrderId);
+
+                    serviceOrder.Bill.UpdateValue(value);
+                    await _ravenDatabaseProvider.UpdateEntity<ServiceOrder>(serviceOrder.Id, serviceOrder);
+                }
+
                 await _ravenDatabaseProvider.UpdateEntity<Bill>(id, bill);
             }
             catch (Exception ex)
@@ -184,6 +209,13 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
                 if (bill == null)
                 {
                     throw new Exception("Não foi encontrado nenhum lançamento financeiro com o id " + id);
+                }
+
+                if (!string.IsNullOrEmpty(bill.ServiceOrderId))
+                {
+                    var serviceOrder = await _ravenDatabaseProvider.GetEntity<ServiceOrder>(bill.ServiceOrderId);
+
+                    throw new InvalidOperationException($"Este lançamento não pode ser cancelado porque está vinculado à ordem de serviço {bill.ServiceOrderId}");
                 }
 
                 bill.CancelBill();

@@ -64,6 +64,23 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
 
         [HttpGet]
         [Authorize]
+        public async Task<IActionResult> GetBill(string id)
+        {
+
+            try
+            {
+                await _billProvider.GetById(id);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetByDate(DateTime startDate, DateTime endDate, string destiny)
         {
 
