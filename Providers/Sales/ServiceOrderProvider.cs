@@ -126,8 +126,8 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
                 
                 startDate = startDate.AddHours(00).AddMinutes(00);
                 endDate = endDate.AddHours(23).AddMinutes(59).AddSeconds(59);
-                var listResult = session.Query<ServiceOrder>()
-                    .Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+                var listResult = await session.Query<ServiceOrder>()
+                    .Where(x => x.Date >= startDate && x.Date <= endDate).ToListAsync();
 
                 return listResult;
             }

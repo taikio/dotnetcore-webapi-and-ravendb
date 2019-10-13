@@ -1,64 +1,60 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
-import { SharedModule } from './theme/shared/shared.module';
-
 import { AppComponent } from './app.component';
-import { AdminComponent } from './theme/layout/admin/admin.component';
-import { AuthComponent } from './theme/layout/auth/auth.component';
-import { NavigationComponent } from './theme/layout/admin/navigation/navigation.component';
-import { NavContentComponent } from './theme/layout/admin/navigation/nav-content/nav-content.component';
-import { NavGroupComponent } from './theme/layout/admin/navigation/nav-content/nav-group/nav-group.component';
-import { NavCollapseComponent } from './theme/layout/admin/navigation/nav-content/nav-collapse/nav-collapse.component';
-import { NavItemComponent } from './theme/layout/admin/navigation/nav-content/nav-item/nav-item.component';
-import { NavBarComponent } from './theme/layout/admin/nav-bar/nav-bar.component';
-import { NavLeftComponent } from './theme/layout/admin/nav-bar/nav-left/nav-left.component';
-import { NavSearchComponent } from './theme/layout/admin/nav-bar/nav-left/nav-search/nav-search.component';
-import { NavRightComponent } from './theme/layout/admin/nav-bar/nav-right/nav-right.component';
-import {ChatUserListComponent} from './theme/layout/admin/nav-bar/nav-right/chat-user-list/chat-user-list.component';
-import {FriendComponent} from './theme/layout/admin/nav-bar/nav-right/chat-user-list/friend/friend.component';
-import {ChatMsgComponent} from './theme/layout/admin/nav-bar/nav-right/chat-msg/chat-msg.component';
-import { ConfigurationComponent } from './theme/layout/admin/configuration/configuration.component';
-
-import { ToggleFullScreenDirective } from './theme/shared/full-screen/toggle-full-screen';
-
-/* Menu Items */
-import { NavigationItem } from './theme/layout/admin/navigation/navigation';
 import { NgbButtonsModule, NgbDropdownModule, NgbTabsetModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AuthModule } from './modules/auth/auth.module';
+import { Interceptor } from './modules/http/interceptor.module';
+import { UiModule } from './modules/ui/ui.module';
+import { SharedModule } from './modules/shared/shared.module';
+import { PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { ServiceOrderModule } from './modules/service-order/service-order.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { CustomerModule } from './modules/customer/customer.module';
+import { AgGridModule } from 'ag-grid-angular';
+import { Ng2LoadingSpinnerModule, INg2LoadingSpinnerConfig, ANIMATION_TYPES } from 'ng2-loading-spinner';
+
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
+
+const loadingConfig: INg2LoadingSpinnerConfig = {
+  animationType: ANIMATION_TYPES.halfCircle,
+  spinnerPosition: 'center',
+  backdropBorderRadius: '15px',
+  spinnerSize: 'xl',
+  spinnerFontSize: '2rem'
+};
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdminComponent,
-    AuthComponent,
-    NavigationComponent,
-    NavContentComponent,
-    NavGroupComponent,
-    NavCollapseComponent,
-    NavItemComponent,
-    NavBarComponent,
-    NavLeftComponent,
-    NavSearchComponent,
-    NavRightComponent,
-    ChatUserListComponent,
-    FriendComponent,
-    ChatMsgComponent,
-    ConfigurationComponent,
-    ToggleFullScreenDirective
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    SharedModule,
     NgbDropdownModule,
     NgbTooltipModule,
     NgbButtonsModule,
-    NgbTabsetModule
+    NgbTabsetModule,
+    AuthModule,
+    Interceptor,
+    UiModule,
+    SharedModule,
+    PerfectScrollbarModule,
+    ServiceOrderModule,
+    DashboardModule,
+    CustomerModule,
+    AgGridModule.withComponents([]),
+    Ng2LoadingSpinnerModule.forRoot(loadingConfig)
   ],
-  providers: [NavigationItem],
+  providers: [
+    {
+      provide: PERFECT_SCROLLBAR_CONFIG,
+      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

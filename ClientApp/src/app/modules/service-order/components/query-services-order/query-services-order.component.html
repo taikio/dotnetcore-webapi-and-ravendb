@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Pesquisar ordens de serviço" [options]="false">
+      <form [formGroup]="searchForm">
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Data inicial</label>
+              <input type="date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="Enter email" formControlName="startDate">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Data final</label>
+              <input type="date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="Enter email" formControlName="endDate">
+            </div>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button" (click)="search()"><i class="feather icon-search"></i>
+                Pesquisar por data</button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group-append">
+              <button class="btn btn-secondary" type="button" (click)="search(true)"><i class="feather icon-search"></i>
+                Pesquisar todos</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>
+
+<div class="row" *ngIf="(rowData | async)!= null">
+  <div class="col-sm-12">
+    <app-card cardTitle="Dados" [options]="false">
+      <div class="row">
+        <ag-grid-angular style="width: 100%; min-height: 400px;" class="ag-theme-balham" [rowData]="rowData | async"
+          [columnDefs]="columnDefs" [defaultColDef]="defaultColDef">
+        </ag-grid-angular>
+      </div>
+    </app-card>
+  </div>
+</div>

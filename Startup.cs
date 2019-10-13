@@ -71,12 +71,11 @@ namespace dotnetcore_webapi_and_ravendb
             // This will instantiate a communication channel between application and the RavenDB server instance.
             services.AddSingleton<IDocumentStore>(provider =>
             {
-
                 if (Debugger.IsAttached)
                 {
                     var store = new DocumentStore
                     {
-                        Database = "smartbudget",
+                        Database = "smartbudget", 
                         Urls = new[] { "http://localhost:8080" },
                         Conventions =
                         {

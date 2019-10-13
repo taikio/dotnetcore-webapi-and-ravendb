@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Raven.Client.Documents;
 
 namespace dotnetcore_webapi_and_ravendb.Providers.Sales
 {
@@ -52,8 +53,8 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
                 endDate = endDate.AddHours(23).AddMinutes(59).AddSeconds(59);
                 destiny = destiny.ToUpper();
 
-                var listResult = session.Query<Bill>()
-                    .Where(x => x.DueDate >= startDate && x.DueDate <= endDate && x.Destiny == destiny).ToList();
+                var listResult = await session.Query<Bill>()
+                    .Where(x => x.DueDate >= startDate && x.DueDate <= endDate && x.Destiny == destiny).ToListAsync();
 
                 return listResult;
             }
