@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
+using System.ComponentModel;
 
 namespace dotnetcore_webapi_and_ravendb.Providers.Sales
 {
@@ -26,14 +27,26 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
             {
                 var session = await _ravenDatabaseProvider.GetSession();
                 var paymentMethod = SystemConstants.ListPaymentMethods().FirstOrDefault(wh => wh.SysId == serviceOrderDto.PaymentMethodSysId);
+
+                if (paymentMethod == null)
+                {
+                    throw new InvalidEnumArgumentException("Não foi encontrado um meio de pagamento válido");
+                }
+
                 var customer = await _ravenDatabaseProvider.GetEntity<Customer>(serviceOrderDto.CustomerId);
+
+                if (customer == null)
+                {
+                    throw new InvalidEnumArgumentException("Não foi encontrado um cliente com o ID informado");
+                }
 
                 var bill = new Bill(
                                 paymentMethod, 
                                 serviceOrderDto.Value, 
                                 SystemConstants.BillDestinyReceive, 
                                 SystemConstants.BillStatus_EmAberto, 
-                                serviceOrderDto.DueDate
+                                serviceOrderDto.DueDate,
+                                serviceOrderDto.Description
                                 );
 
                 await session.StoreAsync(bill);
@@ -41,7 +54,11 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
                 ServiceOrder serviceOrder = new ServiceOrder(DateTime.Now, serviceOrderDto.Description, customer, bill);
 
                 await session.StoreAsync(serviceOrder);
-                await _ravenDatabaseProvider.CommitAsync(session);
+                //await _ravenDatabaseProvider.CommitAsync(session);
+                await session.SaveChangesAsync();
+                session.Dispose();
+                bill.SetServiceOrderId(serviceOrder.Id);
+                await _ravenDatabaseProvider.UpdateEntity<Bill>(bill.Id, bill);
             }
             catch (System.Exception ex)
             {
@@ -138,6 +155,65 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
             finally
             {
                 session.Dispose();
+            }
+        }
+
+        public async Task ChangeCustomer(string serviceOrderId, string customerId)
+        {
+            try
+            {
+                var customer = await _ravenDatabaseProvider.GetEntity<Customer>(customerId);
+
+                if (customer == null)
+                {
+                    throw new ArgumentException("Não foi encontrato um cliente com o ID informado!");
+                }
+
+                var serviceOrder = await _ravenDatabaseProvider.GetEntity<ServiceOrder>(serviceOrderId);
+
+                if (serviceOrder == null)
+                {
+                    throw new ArgumentException("Não foi encontrada uma ordem de serviço com o ID informado!");
+                }
+
+                serviceOrder.ChangeCustomer(customer);
+
+                await _ravenDatabaseProvider.UpdateEntity<ServiceOrder>(serviceOrder.Id, serviceOrder);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task ChangeDescription(string serviceOrderId, string description)
+        {
+            try
+            {
+                var serviceOrder = await _ravenDatabaseProvider.GetEntity<ServiceOrder>(serviceOrderId);
+
+                if (serviceOrder == null)
+                {
+                    throw new ArgumentException("Não foi encontrada uma ordem de serviço com o ID informado!");
+                }
+
+                serviceOrder.ChangeDescription(description);
+
+                var bill = await _ravenDatabaseProvider.GetEntity<Bill>(serviceOrder.Bill.Id);
+
+                if (bill == null)
+                {
+                    throw new ArgumentException("Não foi encontrado um lançamento financeiro vinculado à ordem de serviço!");
+                }
+
+                bill.ChangeDescription(description);
+
+                await _ravenDatabaseProvider.UpdateEntity<Bill>(bill.Id, bill);
+                await _ravenDatabaseProvider.UpdateEntity<ServiceOrder>(serviceOrder.Id, serviceOrder);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

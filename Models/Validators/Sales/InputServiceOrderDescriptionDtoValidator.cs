@@ -7,13 +7,11 @@ using System.Threading.Tasks;
 
 namespace dotnetcore_webapi_and_ravendb.Models.Validators.Sales
 {
-    public class InputBillDtoValidator : AbstractValidator<InputBillDto>
+    public class InputServiceOrderDescriptionDtoValidator : AbstractValidator<InputServiceOrderDescriptionDto>
     {
-        public InputBillDtoValidator()
+        public InputServiceOrderDescriptionDtoValidator()
         {
-            RuleFor(x => x.PaymentMethodSysId).NotEmpty();
-            RuleFor(x => x.Value).NotNull().GreaterThan(0);
-            RuleFor(x => x.DueDate).NotNull().GreaterThanOrEqualTo(DateTime.Now.Date);
+            RuleFor(x => x.ServiceOrderId).NotEmpty();
             RuleFor(x => x.Description).NotEmpty();
         }
     }

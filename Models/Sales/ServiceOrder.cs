@@ -23,6 +23,8 @@ namespace dotnetcore_webapi_and_ravendb.Models.Sales
         public DateTime? CancelDate { get; private set; }
         public bool IsCanceled { get; private set; }
 
+        #region MÉTODOS
+
         public void CancelServiceOrder()
         {
             this.CancelDate = DateTime.Now;
@@ -30,5 +32,19 @@ namespace dotnetcore_webapi_and_ravendb.Models.Sales
 
             this.Bill.CancelBill();
         }
+
+        public void ChangeCustomer(Customer newCustomer)
+        {
+            this.Customer = newCustomer ?? throw new Exception("É obrigatório informar um cliente para a ordem de serviço");
+        }
+
+        public void ChangeDescription(string newDescription)
+        {
+            this.Description = newDescription;
+
+            this.Bill.ChangeDescription(newDescription);
+        }
+
+        #endregion
     }
 }

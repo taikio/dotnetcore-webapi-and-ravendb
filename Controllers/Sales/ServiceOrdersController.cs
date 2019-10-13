@@ -90,5 +90,47 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> Customer([FromBody] InputServiceOrderCustomerDto serviceOrderDto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                await _serviceOrderProvider.ChangeCustomer(serviceOrderDto.ServiceOrderId, serviceOrderDto.CustomerId);
+
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> Description([FromBody] InputServiceOrderDescriptionDto serviceOrderDto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                await _serviceOrderProvider.ChangeDescription(serviceOrderDto.ServiceOrderId, serviceOrderDto.Description);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
