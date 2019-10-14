@@ -41,6 +41,7 @@ export class FormCustomerComponent implements OnInit {
 
   submmit(continueForm: boolean = false) {
     if (!this.customerForm.valid) {
+      Swal.fire('Atenção...', 'Preencha todos os campos do formulario!', 'warning');
       return;
     }
 

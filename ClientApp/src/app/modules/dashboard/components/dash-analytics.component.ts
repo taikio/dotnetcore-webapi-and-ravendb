@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApexChartService } from '../../shared/components/chart/apex-chart/apex-chart.service';
 import { ChartDB } from '../fack-db/chart-data';
+import { BillService, AccountBalance } from '../../bill/services/bill.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dash-analytics',
@@ -10,10 +12,17 @@ import { ChartDB } from '../fack-db/chart-data';
 export class DashAnalyticsComponent implements OnInit {
   public chartDB: any;
   public dailyVisitorStatus: string;
-  public dailyVisitorAxis: any;n
+  public dailyVisitorAxis: any; n;
   public deviceProgressBar: any;
 
-  constructor(public apexEvent: ApexChartService) {
+  public startDate: string;
+  public endDate: string;
+  public accountBalance: Observable<AccountBalance>;
+
+  constructor(
+    public apexEvent: ApexChartService,
+    private billService: BillService) {
+
     this.chartDB = ChartDB;
     this.dailyVisitorStatus = '1y';
 
@@ -67,6 +76,19 @@ export class DashAnalyticsComponent implements OnInit {
     }
   }
 
-  ngOnInit() { }
+  search() {
+    this.accountBalance = this.billService.AccountBalance(this.startDate, this.endDate);
+  }
+
+  ngOnInit() {
+    const date = new Date();
+    const y = date.getFullYear();
+    const m = date.getMonth();
+
+    this.startDate = new Date(y, m, 1).toISOString().split('T')[0];
+    this.endDate = new Date(new Date(y, m + 1, 1, 0).setDate(-1)).toISOString().split('T')[0];
+
+    this.search();
+  }
 
 }

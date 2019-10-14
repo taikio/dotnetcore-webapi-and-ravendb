@@ -1,36 +1,78 @@
 <div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Balanço financeiro" [options]="true">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Data inicial</label>
+            <input type="date" class="form-control" id="startDate" aria-describedby="startDate" [(ngModel)]="startDate">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Data final</label>
+            <input type="date" class="form-control" id="endDate" aria-describedby="endDate" [(ngModel)]="endDate">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button" (click)="search()"><i class="feather icon-search"></i>
+              Pesquisar</button>
+          </div>
+        </div>
+      </div>
+    </app-card>
+  </div>
+
+
   <!-- order-card start -->
   <div class="col-md-6 col-xl-3">
-    <app-card [hidHeader]="true" cardClass="bg-c-blue order-card">
-      <h6 class="text-white">Orders Received</h6>
-      <h2 class="text-right text-white"><i class="feather icon-shopping-cart float-left"></i><span>486</span></h2>
-      <p class="m-b-0">Completed Orders<span class="float-right">351</span></p>
+    <app-card [hidHeader]="true" cardClass="bg-c-red order-card">
+      <h6 class="text-white">A receber</h6>
+      <h2 class="text-right text-white"><i class="feather icon-shopping-cart float-left"></i><span>R$150,00</span></h2>
+      <p class="m-b-0">Já recebido<span class="float-right">R$500,00</span></p>
     </app-card>
   </div>
   <div class="col-md-6 col-xl-3">
     <app-card [hidHeader]="true" cardClass="bg-c-green order-card">
-      <h6 class="text-white">Total Sales</h6>
-      <h2 class="text-right text-white"><i class="feather icon-tag float-left"></i><span>1641</span></h2>
-      <p class="m-b-0">This Month<span class="float-right">213</span></p>
+      <h6 class="text-white">A pagar</h6>
+      <h2 class="text-right text-white"><i class="feather icon-tag float-left"></i><span>R$500,00</span></h2>
+      <p class="m-b-0">Já pago<span class="float-right">R$140,35</span></p>
     </app-card>
   </div>
   <div class="col-md-6 col-xl-3">
     <app-card [hidHeader]="true" cardClass="bg-c-yellow order-card">
-      <h6 class="text-white">Revenue</h6>
-      <h2 class="text-right text-white"><i class="feather icon-repeat float-left"></i><span>$42,562</span></h2>
-      <p class="m-b-0">This Month<span class="float-right">$5,032</span></p>
+      <h6 class="text-white">Contas a receber</h6>
+      <h2 class="text-right text-white"><i class="feather icon-repeat float-left"></i><span>10</span></h2>
+      <p class="m-b-0">Já recebido<span class="float-right">5</span></p>
     </app-card>
   </div>
   <div class="col-md-6 col-xl-3">
     <app-card [hidHeader]="true" cardClass="bg-c-red order-card">
-      <h6 class="text-white">Total Profit</h6>
-      <h2 class="text-right text-white"><i class="feather icon-award float-left"></i><span>$9,562</span></h2>
-      <p class="m-b-0">This Month<span class="float-right">$542</span></p>
+      <h6 class="text-white">Contas a pagar</h6>
+      <h2 class="text-right text-white"><i class="feather icon-award float-left"></i><span>14</span></h2>
+      <p class="m-b-0">Já pagas<span class="float-right">7</span></p>
     </app-card>
   </div>
-  <!-- order-card end -->
+  <div class="col-md-6 col-xl-3">
+    <app-card [hidHeader]="true" cardClass="bg-c-yellow order-card">
+      <h6 class="text-white">Balanço</h6>
+      <h2 class="text-right text-white"><i class="feather icon-award float-left"></i><span>R$750</span></h2>
+      <!-- <p class="m-b-0">Já pagas<span class="float-right">7</span></p> -->
+    </app-card>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <app-card [hidHeader]="true" cardClass="bg-c-blue order-card">
+      <h6 class="text-white">Projeção</h6>
+      <h2 class="text-right text-white"><i class="feather icon-award float-left"></i><span>R$428</span></h2>
+      <!-- <p class="m-b-0">Já pagas<span class="float-right">7</span></p> -->
+    </app-card>
+  </div>
 
-  <!-- account-section start -->
+  <!-- 
   <div class="col-xl-8">
     <app-card cardTitle="Daily Visitor" [options]="false">
       <app-apex-chart chartID="analytics-apex-mixed-chart" [chartConfig]="this.chartDB.analyticsMixed"></app-apex-chart>
@@ -55,9 +97,6 @@
       </div>
     </app-card>
   </div>
-  <!-- account-section end -->
-
-  <!-- conversion-section start -->
   <div class="col-sm-12">
     <div class="row no-gutters">
       <div class="col-md-4 col-xl-2 col-sm-6">
@@ -188,9 +227,6 @@
       </ul>
     </app-card>
   </div>
-  <!-- conversion-section end -->
-
-  <!-- customer overview start -->
   <div class="col-md-12">
     <app-card cardTitle="Campaign Monitor" cardClass="table-card" blockClass="p-0">
       <perfect-scrollbar [style.max-height]="'362px'">
@@ -546,6 +582,6 @@
         </table>
       </perfect-scrollbar>
     </app-card>
-  </div>
-  <!-- customer overview start -->
+  </div> -->
+
 </div>

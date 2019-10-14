@@ -25,10 +25,17 @@ export interface AuthToken {
   access_token: string;
 }
 
-export interface User {
+export interface UserToken {
   username: string;
   password: string;
   token?: AuthToken | null;
+}
+
+export interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
 }
 
 @Injectable({
@@ -52,14 +59,14 @@ export class AuthService {
     return currentUser != null && currentUser.token != null;
   }
 
-  public login(username: string, password: string): Observable<User> {
+  public login(username: string, password: string): Observable<UserToken> {
     const body = `grant_type=password&username=${username}&password=${password}`;
     const request = this.httpHelper.post('/connect/token', body, true) as Observable<AuthToken>;
 
     return request.pipe(
       map((token) => {
 
-        const user: User = {
+        const user: UserToken = {
           username,
           password,
           token: {
@@ -72,7 +79,7 @@ export class AuthService {
 
         return user;
       })
-    ) as Observable<User>;
+    ) as Observable<UserToken>;
   }
 
   public logout() {
@@ -80,7 +87,11 @@ export class AuthService {
     localStorage.removeItem('current_user');
   }
 
-  public getCurrentUser(): User {
-    return JSON.parse(localStorage.getItem('current_user')) as User;
+  public getCurrentUser(): UserToken {
+    return JSON.parse(localStorage.getItem('current_user')) as UserToken;
+  }
+
+  public getProfile() {
+    return this.httpHelper.get('/Users/GetProfile') as Observable<User>;
   }
 }

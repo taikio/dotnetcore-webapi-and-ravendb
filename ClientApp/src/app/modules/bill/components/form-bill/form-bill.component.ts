@@ -42,6 +42,7 @@ export class FormBillComponent implements OnInit {
 
   submmit(continueForm: boolean = false) {
     if (!this.billForm.valid) {
+      Swal.fire('Atenção...', 'Preencha todos os campos do formulario!', 'warning');
       return;
     }
 

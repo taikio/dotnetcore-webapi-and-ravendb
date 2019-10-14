@@ -7,6 +7,7 @@ import { throwError, Observable, BehaviorSubject, of } from 'rxjs';
 import { catchError, filter, take, switchMap, finalize } from 'rxjs/operators';
 import { AuthService } from '../auth/services/auth.service';
 import { NotifyService } from '../ui/services/notify.service';
+import Swal from 'sweetalert2';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -63,9 +64,8 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private refreshAccessToken(): Observable<any> {
-
     this.notify.update('Obtendo token da sessão', 'info');
-
+    // Swal.fire('Opps...', 'Ocorreu um erro ao buscar os clientes', 'info');
     const currentUser = this.auth.getCurrentUser();
     return this.auth.login(currentUser.username, currentUser.password);
   }

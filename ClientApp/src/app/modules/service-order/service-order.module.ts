@@ -8,7 +8,7 @@ import {
   SharedModule
 } from '../shared/shared.module';
 import {
-  NgbDropdownModule
+  NgbDropdownModule, NgbModule
 } from '@ng-bootstrap/ng-bootstrap';
 import {
   Routes,
@@ -19,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { QueryServicesOrderComponent } from './components/query-services-order/query-services-order.component';
 import { AgGridModule } from 'ag-grid-angular';
+import { ChangeServiceOrderComponent } from './components/change-service-order/change-service-order.component';
 
 const routes: Routes = [{
   path: '',
@@ -35,7 +36,8 @@ const routes: Routes = [{
 @NgModule({
   declarations: [
     FormServiceOrderComponent,
-    QueryServicesOrderComponent
+    QueryServicesOrderComponent,
+    ChangeServiceOrderComponent,
   ],
   imports: [
     CommonModule,
@@ -44,8 +46,10 @@ const routes: Routes = [{
     SharedModule,
     NgbDropdownModule,
     RouterModule.forChild(routes),
-    AgGridModule.withComponents([])
+    AgGridModule.withComponents([]),
+    NgbModule,
   ],
-  exports: [RouterModule]
+  entryComponents: [ChangeServiceOrderComponent],
+  exports: [RouterModule, ChangeServiceOrderComponent]
 })
 export class ServiceOrderModule { }

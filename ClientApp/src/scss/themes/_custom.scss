@@ -27,6 +27,7 @@
 }
 
 .user-profile-list {
+
   table.dataTable.display tbody td,
   table.dataTable.display tbody th,
   table.dataTable.row-border tbody td,
@@ -199,6 +200,7 @@ select-dropdown .selected.highlighted {
 }
 
 .table {
+
   td,
   th {
     font-family: $theme-font-family;
@@ -216,20 +218,25 @@ select-dropdown .selected.highlighted {
 }
 
 .pcoded-navbar.theme-horizontal .pcoded-inner-navbar {
-  > app-nav-group > app-nav-collapse > li.pcoded-hasmenu.pcoded-trigger:before,
-  > app-nav-group > app-nav-collapse > li.pcoded-hasmenu.active:before,
-  app-nav-item > li.pcoded-hasmenu.active:before,
-  app-nav-item > li.pcoded-hasmenu.pcoded-trigger:before {
+
+  >app-nav-group>app-nav-collapse>li.pcoded-hasmenu.pcoded-trigger:before,
+  >app-nav-group>app-nav-collapse>li.pcoded-hasmenu.active:before,
+  app-nav-item>li.pcoded-hasmenu.active:before,
+  app-nav-item>li.pcoded-hasmenu.pcoded-trigger:before {
     bottom: -27px;
     text-shadow: 0 1px 2px rgba(54, 80, 138, 0.3);
   }
 }
 
-.h-list-body .chat-messages .chat-menu-reply > div p,
+.h-list-body .chat-messages .chat-menu-reply>div p,
 .pcoded-header.header-blue a.h-back-user-list {
   color: $theme-font-color;
 }
 
 .header-chat .h-list-footer .input-group .form-control {
   height: auto;
+}
+
+.perfect-margin {
+  margin-right: 1em;
 }

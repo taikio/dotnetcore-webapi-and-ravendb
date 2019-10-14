@@ -19,6 +19,7 @@ import { NavigationItem } from './components/admin/navigation/navigation';
 import { SharedModule } from '../shared/shared.module';
 import { Ng2LoadingSpinnerModule, INg2LoadingSpinnerConfig, ANIMATION_TYPES } from 'ng2-loading-spinner';
 import { NotificationMessageComponent } from './components/notification-message/notification-message.component';
+import { NgbModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -60,7 +61,9 @@ const loadingConfig: INg2LoadingSpinnerConfig = {
     CardModule,
     PerfectScrollbarModule,
     SharedModule,
-    Ng2LoadingSpinnerModule.forRoot(loadingConfig)
+    Ng2LoadingSpinnerModule.forRoot(loadingConfig),
+    NgbModule,
+    NgbDropdownModule,
   ],
   providers: [
     NavigationItem,

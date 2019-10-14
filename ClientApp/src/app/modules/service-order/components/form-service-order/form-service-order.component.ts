@@ -46,11 +46,11 @@ export class FormServiceOrderComponent implements OnInit {
   submmit(continueForm: boolean = false) {
 
     if (!this.serviceOrderForm.valid) {
+      Swal.fire('Atenção...', 'Preencha todos os campos do formulario!', 'warning');
       return;
     }
 
     const newService = this.serviceOrderForm.value as NewServiceOrderDto;
-
 
     this.serviceOrder.newServiceOrder(newService).subscribe(
       (sucess) => {

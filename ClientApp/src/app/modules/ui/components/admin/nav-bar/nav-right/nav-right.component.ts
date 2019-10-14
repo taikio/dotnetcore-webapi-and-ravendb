@@ -1,7 +1,10 @@
-import {Component, DoCheck, OnInit} from '@angular/core';
-import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
-import {animate, style, transition, trigger} from '@angular/animations';
-import {GradientConfig} from '../../../../../../app-config';
+import { Component, DoCheck, OnInit } from '@angular/core';
+import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { GradientConfig } from '../../../../../../app-config';
+import { AuthService, UserToken, User } from 'src/app/modules/auth/services/auth.service';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav-right',
@@ -11,20 +14,20 @@ import {GradientConfig} from '../../../../../../app-config';
   animations: [
     trigger('slideInOutLeft', [
       transition(':enter', [
-        style({transform: 'translateX(100%)'}),
-        animate('300ms ease-in', style({transform: 'translateX(0%)'}))
+        style({ transform: 'translateX(100%)' }),
+        animate('300ms ease-in', style({ transform: 'translateX(0%)' }))
       ]),
       transition(':leave', [
-        animate('300ms ease-in', style({transform: 'translateX(100%)'}))
+        animate('300ms ease-in', style({ transform: 'translateX(100%)' }))
       ])
     ]),
     trigger('slideInOutRight', [
       transition(':enter', [
-        style({transform: 'translateX(-100%)'}),
-        animate('300ms ease-in', style({transform: 'translateX(0%)'}))
+        style({ transform: 'translateX(-100%)' }),
+        animate('300ms ease-in', style({ transform: 'translateX(0%)' }))
       ]),
       transition(':leave', [
-        animate('300ms ease-in', style({transform: 'translateX(-100%)'}))
+        animate('300ms ease-in', style({ transform: 'translateX(-100%)' }))
       ])
     ])
   ]
@@ -34,14 +37,24 @@ export class NavRightComponent implements OnInit, DoCheck {
   public chatMessage: boolean;
   public friendId: boolean;
   public gradientConfig: any;
+  public user: Observable<User>;
 
-  constructor() {
+  constructor(
+    private auth: AuthService,
+    private router: Router) {
     this.visibleUserList = false;
     this.chatMessage = false;
     this.gradientConfig = GradientConfig.config;
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.user = this.auth.getProfile();
+  }
+
+  logout() {
+    this.auth.logout();
+    this.router.navigate(['/auth/sign']);
+  }
 
   onChatToggle(friendID) {
     this.friendId = friendID;

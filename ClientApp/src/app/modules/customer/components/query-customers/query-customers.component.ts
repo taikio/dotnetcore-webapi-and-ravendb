@@ -6,6 +6,7 @@ import { Subscription, Observable } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { AgGridHelperService } from 'src/app/modules/shared/services/ag-grid-helper.service';
 import { NotifyService } from 'src/app/modules/ui/services/notify.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-query-customers',
@@ -37,7 +38,7 @@ export class QueryCustomersComponent implements OnInit, OnDestroy {
     this.rowData = this.customerService.getCustomers();
     this.subscription = this.rowData.subscribe(() => this.loading.showHide(false), (error) => {
       this.loading.showHide(false);
-      this.notify.update('Ocorreu um erro ao buscar os clientes', 'error');
+      Swal.fire('Opps...', 'Ocorreu um erro ao buscar os clientes', 'error');
       console.error(error);
     });
   }

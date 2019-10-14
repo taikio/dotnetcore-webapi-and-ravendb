@@ -34,7 +34,7 @@ export class ServiceOrderService {
     return this.httpHelper.post('/ServiceOrders/New', order);
   }
 
-  public cancelServiceOrder(id: string) {
+  public cancel(id: string) {
     return this.httpHelper.post(`ServiceOrders/Cancel/${id}`, null);
   }
 
@@ -47,5 +47,17 @@ export class ServiceOrderService {
       startDate,
       endDate,
     }) as Observable<ServiceOrder>;
+  }
+
+  public changeCustomer(serviceOrderId: string, customerId: string) {
+    return this.httpHelper.put(`/ServiceOrders/Customer`, {
+      serviceOrderId, customerId
+    });
+  }
+
+  public changeDescription(serviceOrderId: string, description: string) {
+    return this.httpHelper.put(`/ServiceOrders/Description`, {
+      serviceOrderId, description
+    });
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { BillService } from '../../services/bill.service';
+import { BillService, Bill } from '../../services/bill.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
 import { LoadingService } from 'src/app/modules/ui/services/loading.service';
@@ -7,11 +7,14 @@ import { skip } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { AgGridHelperService } from 'src/app/modules/shared/services/ag-grid-helper.service';
 import { NotifyService } from 'src/app/modules/ui/services/notify.service';
+import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import Swal from 'sweetalert2';
+import { ChangeBillComponent } from '../change-bill/change-bill.component';
 
 @Component({
   selector: 'app-query-bills',
   templateUrl: './query-bills.component.html',
-  styleUrls: ['./query-bills.component.scss']
+  styleUrls: ['./query-bills.component.scss'], providers: [NgbDropdownConfig],
 })
 export class QueryBillsComponent implements OnInit, OnDestroy {
 
@@ -20,13 +23,18 @@ export class QueryBillsComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private loading: LoadingService,
     private agGridHelper: AgGridHelperService,
-    private notify: NotifyService) { }
+    private notify: NotifyService,
+    private modalService: NgbModal) {
+    this.rowSelection = 'single';
+  }
 
   searchForm: FormGroup;
   subscription: Subscription;
   rowData: Observable<any>;
   showSpinner = false;
   datePipe = new DatePipe('en-US');
+  selectedRow: Bill;
+  private rowSelection;
 
   columnDefs = [
     { headerName: 'ID Lançamento', field: 'id', sortable: true, filter: true },
@@ -67,6 +75,7 @@ export class QueryBillsComponent implements OnInit, OnDestroy {
 
   search() {
     if (!this.searchForm.valid) {
+      Swal.fire('Atenção...', 'Preencha o formulario corretamente!', 'warning');
       return;
     }
 
@@ -79,9 +88,31 @@ export class QueryBillsComponent implements OnInit, OnDestroy {
 
     this.subscription = this.rowData.subscribe(() => this.loading.showHide(false), (error) => {
       this.loading.showHide(false);
-      this.notify.update('Ocorreu um erro ao buscar os lançamento financeiros', 'error');
+      Swal.fire('Opps...', 'Ocorreu um erro ao buscar os lançamento financeiros', 'error');
       console.error(error);
     });
+  }
+
+  open(type: 'payment' | 'duedate' | 'value' | 'cancel' | 'pay') {
+
+    if (!this.selectedRow) {
+      Swal.fire('Opps...', 'Nenhum registro selecionado!', 'warning');
+      return;
+    }
+
+    const modalRef = this.modalService.open(ChangeBillComponent);
+    modalRef.componentInstance.type = type;
+    modalRef.componentInstance.idBill = this.selectedRow.id;
+
+    modalRef.result.then(() => {
+      this.search();
+    }, () => {
+    });
+  }
+
+
+  onRowSelected(event) {
+    this.selectedRow = event.data;
   }
 
   ngOnInit() {

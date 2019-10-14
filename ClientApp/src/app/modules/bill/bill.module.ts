@@ -7,6 +7,8 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { QueryBillsComponent } from './components/query-bills/query-bills.component';
 import { AgGridModule } from 'ag-grid-angular';
+import { NgbModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { ChangeBillComponent } from './components/change-bill/change-bill.component';
 
 const routes: Routes = [{
   path: '',
@@ -23,7 +25,8 @@ const routes: Routes = [{
 @NgModule({
   declarations: [
     FormBillComponent,
-    QueryBillsComponent
+    QueryBillsComponent,
+    ChangeBillComponent
   ],
   imports: [
     CommonModule,
@@ -32,9 +35,12 @@ const routes: Routes = [{
     RouterModule.forChild(routes),
     SharedModule,
     AgGridModule.withComponents([]),
+    NgbModule,
+    NgbDropdownModule,
   ],
   exports: [
     RouterModule
-  ]
+  ],
+  entryComponents: [ChangeBillComponent]
 })
 export class BillModule { }

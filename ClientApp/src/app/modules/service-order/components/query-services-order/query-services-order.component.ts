@@ -1,11 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ServiceOrderService } from '../../services/service-order.service';
+import { Component, OnInit, OnDestroy, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
+import { ServiceOrderService, ServiceOrder } from '../../services/service-order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoadingService } from 'src/app/modules/ui/services/loading.service';
 import { Subscription, Observable } from 'rxjs';
-import { DatePipe } from '@angular/common';
 import { AgGridHelperService } from 'src/app/modules/shared/services/ag-grid-helper.service';
 import { NotifyService } from 'src/app/modules/ui/services/notify.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ChangeServiceOrderComponent } from '../change-service-order/change-service-order.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-query-services-order',
@@ -19,14 +21,23 @@ export class QueryServicesOrderComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private loading: LoadingService,
     private agGridHelper: AgGridHelperService,
-    private notify: NotifyService) { }
+    private modalService: NgbModal) {
+    this.rowSelection = 'single';
+  }
 
   searchForm: FormGroup;
   subscription: Subscription;
   rowData: Observable<any>;
   showSpinner = false;
+  closeResult: string;
+  gridApi;
+  gridColumnApi;
+  selectedRow: ServiceOrder;
+  selectedRowsString = 'Teste';
+  private rowSelection;
 
   columnDefs = [
+    { headerName: 'ID Ordem', field: 'id', sortable: true, filter: true },
     { headerName: 'Descrição', field: 'description', sortable: true, filter: true },
     { headerName: 'Cliente', field: 'customer.name', sortable: true, filter: true },
     { headerName: 'Data', field: 'date', sortable: true, filter: true, valueFormatter: this.agGridHelper.dateFormatter },
@@ -38,7 +49,6 @@ export class QueryServicesOrderComponent implements OnInit, OnDestroy {
     {
       headerName: 'Dt. Cancelamento', field: 'cancelDate', sortable: true, filter: true, valueFormatter: this.agGridHelper.dateFormatter
     },
-    // { headerName: 'ID Ordem', field: 'id', sortable: true, filter: true },
     {
       headerName: 'Lançamento',
       marryChildren: true,
@@ -69,7 +79,7 @@ export class QueryServicesOrderComponent implements OnInit, OnDestroy {
           headerName: 'Dt. Cancelamento', field: 'bill.cancelDate', sortable: true,
           filter: true, valueFormatter: this.agGridHelper.dateFormatter, columnGroupShow: 'open'
         },
-        // { headerName: 'ID Lançamento', field: 'bill.id', sortable: true, filter: true, columnGroupShow: 'open' },
+        { headerName: 'ID Lançamento', field: 'bill.id', sortable: true, filter: true, columnGroupShow: 'open' },
       ]
     },
   ];
@@ -94,6 +104,7 @@ export class QueryServicesOrderComponent implements OnInit, OnDestroy {
 
   search(pesquisarTodos = false) {
     if (!pesquisarTodos && !this.searchForm.valid) {
+      Swal.fire('Atenção...', 'Preencha o formulario corretamente!', 'warning');
       return;
     }
 
@@ -109,7 +120,7 @@ export class QueryServicesOrderComponent implements OnInit, OnDestroy {
 
     this.subscription = this.rowData.subscribe(() => this.loading.showHide(false), (error) => {
       this.loading.showHide(false);
-      this.notify.update('Ocorreu um erro ao buscar as ordens de serviço', 'error');
+      Swal.fire('Ops..', 'Ocorreu um erro ao buscar as ordens de serviço', 'error');
       console.error(error);
     });
   }
@@ -124,4 +135,29 @@ export class QueryServicesOrderComponent implements OnInit, OnDestroy {
     }
   }
 
+  open(type: 'customer' | 'description' | 'cancel') {
+
+    if (!this.selectedRow) {
+      Swal.fire('Opps...', 'Nenhum registro selecionado!', 'warning');
+      return;
+    }
+
+    const modalRef = this.modalService.open(ChangeServiceOrderComponent);
+    modalRef.componentInstance.type = type;
+    modalRef.componentInstance.idServiceOrder = this.selectedRow.id;
+
+    modalRef.result.then(() => {
+      if (this.searchForm.valid) {
+        this.search();
+      } else {
+        this.search(true);
+      }
+    }, () => {
+    });
+  }
+
+
+  onRowSelected(event) {
+    this.selectedRow = event.data;
+  }
 }
