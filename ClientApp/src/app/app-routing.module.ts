@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AdminComponent } from './theme/layout/admin/admin.component';
-import {CoreChartModule} from './demo/pages/core-chart/core-chart.module';
-import {AuthComponent} from './theme/layout/auth/auth.component';
+import { AuthSigninComponent } from './modules/auth/components/auth-signin/auth-signin.component';
+import { AdminComponent } from './modules/ui/components/admin/admin.component';
+import { AuthGuard } from './modules/auth/services/auth.guard';
+import { DashAnalyticsComponent } from './modules/dashboard/components/dash-analytics.component';
 
 const routes: Routes = [
   {
@@ -11,50 +12,38 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'dashboard/analytics',
+        redirectTo: 'dashboard',
         pathMatch: 'full'
       },
       {
         path: 'dashboard',
-        loadChildren: () => import('./demo/dashboard/dashboard.module').then(module => module.DashboardModule)
+        component: DashAnalyticsComponent,
+        canActivate: [AuthGuard]
       },
       {
-        path: 'layout',
-        loadChildren: () => import('./demo/pages/layout/layout.module').then(module => module.LayoutModule)
+        path: 'service-order',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./modules/service-order/service-order.module').then(module => module.ServiceOrderModule)
       },
       {
-        path: 'basic',
-        loadChildren: () => import('./demo/ui-elements/ui-basic/ui-basic.module').then(module => module.UiBasicModule)
+        path: 'bill',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./modules/bill/bill.module').then(module => module.BillModule)
       },
       {
-        path: 'forms',
-        loadChildren: () => import('./demo/pages/form-elements/form-elements.module').then(module => module.FormElementsModule)
-      },
-      {
-        path: 'tbl-bootstrap',
-        loadChildren: () => import('./demo/pages/tables/tbl-bootstrap/tbl-bootstrap.module').then(module => module.TblBootstrapModule)
-      },
-      {
-        path: 'charts',
-        loadChildren: () => import('./demo/pages/core-chart/core-chart.module').then(module => module.CoreChartModule)
-      },
-      {
-        path: 'maps',
-        loadChildren: () => import('./demo/pages/core-maps/core-maps.module').then(module => module.CoreMapsModule)
-      },
-      {
-        path: 'sample-page',
-        loadChildren: () => import('./demo/pages/sample-page/sample-page.module').then(module => module.SamplePageModule)
+        path: 'customer',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./modules/customer/customer.module').then(module => module.CustomerModule)
       }
-    ]
+    ],
   },
   {
     path: '',
-    component: AuthComponent,
+    component: AuthSigninComponent,
     children: [
       {
         path: 'auth',
-        loadChildren: () => import('./demo/pages/authentication/authentication.module').then(module => module.AuthenticationModule)
+        loadChildren: () => import('./modules/auth/auth.module').then(module => module.AuthModule)
       }
     ]
   }

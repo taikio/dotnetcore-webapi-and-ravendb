@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Consultar clientes" [options]="false">
+      <div class="row">
+        <ag-grid-angular style="width: 100%; min-height: 400px;" class="ag-theme-balham" [rowData]="rowData | async"
+          [columnDefs]="columnDefs">
+        </ag-grid-angular>
+      </div>
+    </app-card>
+  </div>
+</div>

@@ -1,5 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {NavigationEnd, Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { AuthService } from './modules/auth/services/auth.service';
+import { LoadingService } from './modules/ui/services/loading.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +10,7 @@ import {NavigationEnd, Router} from '@angular/router';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private auth: AuthService, public loading: LoadingService) { }
 
   ngOnInit() {
     this.router.events.subscribe((evt) => {
