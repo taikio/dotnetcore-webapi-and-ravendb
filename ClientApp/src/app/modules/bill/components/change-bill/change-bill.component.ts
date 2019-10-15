@@ -35,7 +35,7 @@ export class ChangeBillComponent implements OnInit {
           this.activeModal.close();
         },
         (error) => {
-          Swal.fire('Opps...', 'Ocorreu uma falha ao alterar o meio de pagamento!', 'error');
+          Swal.fire('Opps...', error.error ? error.error : 'Ocorreu uma falha ao alterar o meio de pagamento!', 'error');
           console.log('Falha ao cadastrar o lançamento', error);
         }
       );
@@ -46,7 +46,7 @@ export class ChangeBillComponent implements OnInit {
           this.activeModal.close();
         },
         (error) => {
-          Swal.fire('Opps...', 'Ocorreu uma falha ao alterar a data de vencimento!', 'error');
+          Swal.fire('Opps...', error.error ? error.error : 'Ocorreu uma falha ao alterar a data de vencimento!', 'error');
           console.log('Falha ao cadastrar o lançamento', error);
         }
       );
@@ -57,7 +57,7 @@ export class ChangeBillComponent implements OnInit {
           this.activeModal.close();
         },
         (error) => {
-          Swal.fire('Opps...', 'Ocorreu uma falha ao alterar o valor!', 'error');
+          Swal.fire('Opps...', error.error ? error.error : 'Ocorreu uma falha ao alterar o valor!', 'error');
           console.log('Falha ao cadastrar o lançamento', error);
         }
       );
@@ -73,7 +73,7 @@ export class ChangeBillComponent implements OnInit {
         this.activeModal.close();
       },
       (error) => {
-        Swal.fire('Opps...', 'Ocorreu uma falha ao cancelar o lançamento!', 'error');
+        Swal.fire('Opps...', error.error ? error.error : 'Ocorreu uma falha ao cancelar o lançamento!', 'error');
         console.log('Falha ao falha ao cancelar o lançamento', error);
       }
     );
@@ -86,7 +86,7 @@ export class ChangeBillComponent implements OnInit {
         this.activeModal.close();
       },
       (error) => {
-        Swal.fire('Opps...', 'Ocorreu uma falha ao baixar o lançamento!', 'error');
+        Swal.fire('Opps...', error.error ? error.error : 'Ocorreu uma falha ao baixar o lançamento!', 'error');
         console.log('Falha ao baixar o lançamento', error);
       }
     );

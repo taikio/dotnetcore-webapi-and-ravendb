@@ -34,7 +34,7 @@ export class ChangeServiceOrderComponent implements OnInit {
           this.activeModal.close();
         },
         (error) => {
-          Swal.fire('Opps...', 'Ocorreu uma falha ao alterar o cliente!', 'error');
+          Swal.fire('Opps...', error.error ? error.error : 'Ocorreu uma falha ao alterar o cliente!', 'error');
           console.log('Falha ao alterar a ordem de serviço', error);
         }
       );
@@ -45,7 +45,7 @@ export class ChangeServiceOrderComponent implements OnInit {
           this.activeModal.close();
         },
         (error) => {
-          Swal.fire('Opps...', 'Ocorreu uma falha ao alterar a descrição!', 'error');
+          Swal.fire('Opps...', error.error ? error.error : 'Ocorreu uma falha ao alterar a descrição!', 'error');
           console.log('Falha ao alterar a ordem de serviço', error);
         }
       );
@@ -61,7 +61,7 @@ export class ChangeServiceOrderComponent implements OnInit {
         this.activeModal.close();
       },
       (error) => {
-        Swal.fire('Opps...', 'Ocorreu uma falha ao cancelar a ordem de serviço!', 'error');
+        Swal.fire('Opps...', error.error ? error.error : 'Ocorreu uma falha ao cancelar a ordem de serviço!', 'error');
         console.log('Falha ao cancelar a ordem de serviço', error);
       }
     );

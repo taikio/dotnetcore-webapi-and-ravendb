@@ -35,7 +35,7 @@ export class ServiceOrderService {
   }
 
   public cancel(id: string) {
-    return this.httpHelper.post(`ServiceOrders/Cancel/${id}`, null);
+    return this.httpHelper.post(`/ServiceOrders/Cancel/${id}`, null);
   }
 
   public getAll(): Observable<ServiceOrder> {

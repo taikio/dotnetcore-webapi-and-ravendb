@@ -42,7 +42,7 @@ export class QueryServicesOrderComponent implements OnInit, OnDestroy {
     { headerName: 'Cliente', field: 'customer.name', sortable: true, filter: true },
     { headerName: 'Data', field: 'date', sortable: true, filter: true, valueFormatter: this.agGridHelper.dateFormatter },
     {
-      headerName: 'Cancelado?', field: 'paid', sortable: true, filter: true, cellRenderer: params => {
+      headerName: 'Cancelado?', field: 'isCanceled', sortable: true, filter: true, cellRenderer: params => {
         return `<input type='checkbox' ${params.value ? 'checked' : ''} />`;
       }
     },
