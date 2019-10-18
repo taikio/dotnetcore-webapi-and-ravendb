@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { QueryBillsComponent } from './components/query-bills/query-bills.component';
 import { AgGridModule } from 'ag-grid-angular';
-import { NgbModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbDropdownModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeBillComponent } from './components/change-bill/change-bill.component';
 
 const routes: Routes = [{
@@ -36,6 +36,7 @@ const routes: Routes = [{
     SharedModule,
     AgGridModule.withComponents([]),
     NgbModule,
+    NgbDatepickerModule,
     NgbDropdownModule,
   ],
   exports: [

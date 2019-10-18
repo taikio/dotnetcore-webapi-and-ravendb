@@ -4,7 +4,8 @@ import { DashAnalyticsComponent } from './components/dash-analytics.component';
 import { Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbProgressbarModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -15,7 +16,10 @@ import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
     CommonModule,
     SharedModule,
     PerfectScrollbarModule,
-    NgbProgressbarModule
+    NgbProgressbarModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule
   ]
 })
 export class DashboardModule { }

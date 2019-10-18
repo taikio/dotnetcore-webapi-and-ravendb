@@ -1,19 +1,38 @@
 <div class="row">
   <div class="col-sm-12">
     <app-card cardTitle="Balanço financeiro" [options]="true">
+
       <div class="row">
+
         <div class="col-md-6">
           <div class="form-group">
             <label for="exampleInputEmail1">Data inicial</label>
-            <input type="date" class="form-control" id="startDate" aria-describedby="startDate" [(ngModel)]="startDate">
+            <div class="input-group">
+              <input class="form-control" placeholder="Selecione a data inicial" name="dp" [(ngModel)]="startDate"
+                ngbDatepicker #d="ngbDatepicker" container="body">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i
+                    class="feather icon-calendar"></i></button>
+              </div>
+            </div>
           </div>
         </div>
+
         <div class="col-md-6">
           <div class="form-group">
             <label for="exampleInputEmail1">Data final</label>
-            <input type="date" class="form-control" id="endDate" aria-describedby="endDate" [(ngModel)]="endDate">
+            <div class="input-group">
+              <input class="form-control" placeholder="Selecione a data final" name="dp2" [(ngModel)]="endDate"
+                ngbDatepicker #d2="ngbDatepicker" container="body">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button"><i
+                    class="feather icon-calendar"></i></button>
+              </div>
+            </div>
           </div>
         </div>
+
+
       </div>
 
       <div class="row">
@@ -24,6 +43,7 @@
           </div>
         </div>
       </div>
+
     </app-card>
   </div>
 
@@ -32,42 +52,54 @@
   <div class="col-md-6 col-xl-3">
     <app-card [hidHeader]="true" cardClass="bg-c-red order-card">
       <h6 class="text-white">A receber</h6>
-      <h2 class="text-right text-white"><i class="feather icon-shopping-cart float-left"></i><span>R$150,00</span></h2>
-      <p class="m-b-0">Já recebido<span class="float-right">R$500,00</span></p>
+      <h2 class="text-right text-white"><i
+          class="fontawesome fas fa-cash-register float-left"></i><span>R${{(accountBalance|async)?.incomingPendingValue}}</span>
+      </h2>
+      <p class="m-b-0">Já recebido<span class="float-right">R${{(accountBalance|async)?.incomingPaidValue}}</span></p>
     </app-card>
   </div>
   <div class="col-md-6 col-xl-3">
     <app-card [hidHeader]="true" cardClass="bg-c-green order-card">
       <h6 class="text-white">A pagar</h6>
-      <h2 class="text-right text-white"><i class="feather icon-tag float-left"></i><span>R$500,00</span></h2>
-      <p class="m-b-0">Já pago<span class="float-right">R$140,35</span></p>
+      <h2 class="text-right text-white"><i
+          class="fontawesome fas fa-hand-holding-usd float-left"></i><span>R${{(accountBalance|async)?.outgoingPendingValue}}</span>
+      </h2>
+      <p class="m-b-0">Já pago<span class="float-right">R${{(accountBalance|async)?.outgoingPaidValue}}</span></p>
     </app-card>
   </div>
   <div class="col-md-6 col-xl-3">
     <app-card [hidHeader]="true" cardClass="bg-c-yellow order-card">
       <h6 class="text-white">Contas a receber</h6>
-      <h2 class="text-right text-white"><i class="feather icon-repeat float-left"></i><span>10</span></h2>
-      <p class="m-b-0">Já recebido<span class="float-right">5</span></p>
+      <h2 class="text-right text-white"><i
+          class="fontawesome fas fa-shopping-cart float-left"></i><span>{{(accountBalance|async)?.incomingPendingQuantity}}</span>
+      </h2>
+      <p class="m-b-0">Já recebido<span class="float-right">{{(accountBalance|async)?.incomingPaidQuantity}}</span></p>
     </app-card>
   </div>
   <div class="col-md-6 col-xl-3">
     <app-card [hidHeader]="true" cardClass="bg-c-red order-card">
       <h6 class="text-white">Contas a pagar</h6>
-      <h2 class="text-right text-white"><i class="feather icon-award float-left"></i><span>14</span></h2>
-      <p class="m-b-0">Já pagas<span class="float-right">7</span></p>
+      <h2 class="text-right text-white"><i
+          class="fontawesome fas fa-hand-holding-usd float-left"></i><span>{{(accountBalance|async)?.outgoingPendingQuantity}}</span>
+      </h2>
+      <p class="m-b-0">Já pagas<span class="float-right">{{(accountBalance|async)?.outgoingPaidQuantity}}</span></p>
     </app-card>
   </div>
   <div class="col-md-6 col-xl-3">
     <app-card [hidHeader]="true" cardClass="bg-c-yellow order-card">
       <h6 class="text-white">Balanço</h6>
-      <h2 class="text-right text-white"><i class="feather icon-award float-left"></i><span>R$750</span></h2>
+      <h2 class="text-right text-white"><i
+          class="fontawesome fas fa-balance-scale float-left"></i><span>R${{(accountBalance|async)?.incomingOutgoingBalance}}</span>
+      </h2>
       <!-- <p class="m-b-0">Já pagas<span class="float-right">7</span></p> -->
     </app-card>
   </div>
   <div class="col-md-6 col-xl-3">
     <app-card [hidHeader]="true" cardClass="bg-c-blue order-card">
       <h6 class="text-white">Projeção</h6>
-      <h2 class="text-right text-white"><i class="feather icon-award float-left"></i><span>R$428</span></h2>
+      <h2 class="text-right text-white"><i
+          class="fontawesome fas fa-chart-line float-left"></i><span>R${{(accountBalance|async)?.incomingOutgoingProjection}}</span>
+      </h2>
       <!-- <p class="m-b-0">Já pagas<span class="float-right">7</span></p> -->
     </app-card>
   </div>

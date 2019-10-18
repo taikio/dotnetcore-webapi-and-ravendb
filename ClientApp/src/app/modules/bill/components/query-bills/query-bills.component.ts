@@ -7,7 +7,7 @@ import { skip } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { AgGridHelperService } from 'src/app/modules/shared/services/ag-grid-helper.service';
 import { NotifyService } from 'src/app/modules/ui/services/notify.service';
-import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownConfig, NgbModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { ChangeBillComponent } from '../change-bill/change-bill.component';
 
@@ -82,8 +82,8 @@ export class QueryBillsComponent implements OnInit, OnDestroy {
     this.loading.showHide(true);
 
     this.rowData = this.billService.getByDate(
-      this.searchForm.value.startDate,
-      this.searchForm.value.endDate,
+      this.getStringDateFromNgbDate(this.searchForm.value.startDate as NgbDate),
+      this.getStringDateFromNgbDate(this.searchForm.value.endDate as NgbDate),
       this.searchForm.value.destiny);
 
     this.subscription = this.rowData.subscribe(() => this.loading.showHide(false), (error) => {
@@ -110,6 +110,9 @@ export class QueryBillsComponent implements OnInit, OnDestroy {
     });
   }
 
+  getStringDateFromNgbDate(ngb: NgbDate){
+    return `${ngb.year}-${ngb.month}-${ngb.day}`;
+  }
 
   onRowSelected(event) {
     this.selectedRow = event.data;

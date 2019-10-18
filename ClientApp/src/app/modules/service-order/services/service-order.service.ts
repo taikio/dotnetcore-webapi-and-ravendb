@@ -42,7 +42,7 @@ export class ServiceOrderService {
     return this.httpHelper.get('/ServiceOrders/GetList') as Observable<ServiceOrder>;
   }
 
-  public getByDate(startDate: Date, endDate: Date): Observable<ServiceOrder> {
+  public getByDate(startDate: string, endDate: string): Observable<ServiceOrder> {
     return this.httpHelper.get('/ServiceOrders/GetByDate', {
       startDate,
       endDate,

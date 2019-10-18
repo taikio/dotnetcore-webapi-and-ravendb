@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { BillService, NewBillDto } from '../../services/bill.service';
 import { Router } from '@angular/router';
+import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'form-bill',
@@ -47,6 +48,7 @@ export class FormBillComponent implements OnInit {
     }
 
     const newService = this.billForm.value as NewBillDto;
+    newService.dueDate = this.getStringDateFromNgbDate(this.billForm.value.dueDate);
 
     this.billService.new(newService).subscribe(
       (sucess) => {
@@ -61,6 +63,10 @@ export class FormBillComponent implements OnInit {
         console.log('Falha ao cadastrar o lançamento, error');
       }
     );
+  }
+
+  getStringDateFromNgbDate(ngb: NgbDate){
+    return `${ngb.year}-${ngb.month}-${ngb.day}`;
   }
 
   ngOnInit() {

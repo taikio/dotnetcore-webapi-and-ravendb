@@ -30,8 +30,14 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="exampleInputEmail1">Data de vencimento</label>
-              <input type="date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                placeholder="Enter email" formControlName="dueDate">
+              <div class="input-group">
+                <input class="form-control" placeholder="Informe a data de vencimento" name="dpStart"
+                  formControlName="dueDate" ngbDatepicker #dStart="ngbDatepicker" container="body">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="dStart.toggle()" type="button"><i
+                      class="feather icon-calendar"></i></button>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-md-6">

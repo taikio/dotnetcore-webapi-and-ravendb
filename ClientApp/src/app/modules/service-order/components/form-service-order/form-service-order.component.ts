@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ServiceOrderService, ServiceOrder, NewServiceOrderDto } from '../../services/service-order.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'form-service-order',
@@ -51,6 +52,7 @@ export class FormServiceOrderComponent implements OnInit {
     }
 
     const newService = this.serviceOrderForm.value as NewServiceOrderDto;
+    newService.dueDate = this.getStringDateFromNgbDate(this.serviceOrderForm.value.dueDate);
 
     this.serviceOrder.newServiceOrder(newService).subscribe(
       (sucess) => {
@@ -65,6 +67,10 @@ export class FormServiceOrderComponent implements OnInit {
         console.log('Falha ao cadastrar ordem de serviço, error');
       }
     );
+  }
+
+  getStringDateFromNgbDate(ngb: NgbDate){
+    return `${ngb.year}-${ngb.month}-${ngb.day}`;
   }
 
   ngOnInit() {
