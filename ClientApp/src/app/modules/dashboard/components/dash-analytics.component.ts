@@ -83,7 +83,7 @@ export class DashAnalyticsComponent implements OnInit {
     const end = `${this.endDate.year}-${this.endDate.month}-${this.endDate.day}`;
 
     this.accountBalance = this.billService.AccountBalance(start, end);
-    this.accountBalance.subscribe((data) => console.log(data), (error) => console.log(error));
+    //this.accountBalance.subscribe((data) => console.log(data), (error) => console.log(error));
   }
 
   ngOnInit() {
