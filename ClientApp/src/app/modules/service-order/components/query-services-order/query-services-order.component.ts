@@ -5,7 +5,7 @@ import { LoadingService } from 'src/app/modules/ui/services/loading.service';
 import { Subscription, Observable } from 'rxjs';
 import { AgGridHelperService } from 'src/app/modules/shared/services/ag-grid-helper.service';
 import { NotifyService } from 'src/app/modules/ui/services/notify.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeServiceOrderComponent } from '../change-service-order/change-service-order.component';
 import Swal from 'sweetalert2';
 
@@ -114,8 +114,8 @@ export class QueryServicesOrderComponent implements OnInit, OnDestroy {
       this.rowData = this.serviceOrderService.getAll();
     } else {
       this.rowData = this.serviceOrderService.getByDate(
-        this.searchForm.value.startDate,
-        this.searchForm.value.endDate);
+        this.getStringDateFromNgbDate(this.searchForm.value.startDate as NgbDate),
+        this.getStringDateFromNgbDate(this.searchForm.value.endDate as NgbDate));
     }
 
     this.subscription = this.rowData.subscribe(() => this.loading.showHide(false), (error) => {
@@ -123,6 +123,10 @@ export class QueryServicesOrderComponent implements OnInit, OnDestroy {
       Swal.fire('Ops..', 'Ocorreu um erro ao buscar as ordens de serviço', 'error');
       console.error(error);
     });
+  }
+
+  getStringDateFromNgbDate(ngb: NgbDate) {
+    return `${ngb.year}-${ngb.month}-${ngb.day}`;
   }
 
   ngOnInit() {

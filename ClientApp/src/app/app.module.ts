@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NgbButtonsModule, NgbDropdownModule, NgbTabsetModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbButtonsModule, NgbDropdownModule, NgbTabsetModule, NgbTooltipModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthModule } from './modules/auth/auth.module';
 import { Interceptor } from './modules/http/interceptor.module';
 import { UiModule } from './modules/ui/ui.module';
@@ -14,6 +14,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { CustomerModule } from './modules/customer/customer.module';
 import { AgGridModule } from 'ag-grid-angular';
 import { Ng2LoadingSpinnerModule, INg2LoadingSpinnerConfig, ANIMATION_TYPES } from 'ng2-loading-spinner';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -33,6 +34,9 @@ const loadingConfig: INg2LoadingSpinnerConfig = {
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     NgbDropdownModule,
@@ -48,7 +52,8 @@ const loadingConfig: INg2LoadingSpinnerConfig = {
     DashboardModule,
     CustomerModule,
     AgGridModule.withComponents([]),
-    Ng2LoadingSpinnerModule.forRoot(loadingConfig)
+    Ng2LoadingSpinnerModule.forRoot(loadingConfig),
+
   ],
   providers: [
     {

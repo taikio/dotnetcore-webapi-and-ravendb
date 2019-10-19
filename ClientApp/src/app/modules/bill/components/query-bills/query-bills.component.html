@@ -8,15 +8,27 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="exampleInputEmail1">Data inicial</label>
-              <input type="date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                placeholder="Enter email" formControlName="startDate">
+              <div class="input-group">
+                <input class="form-control" placeholder="Selecione a data inicial" name="dpStart"
+                  formControlName="startDate" ngbDatepicker #dStart="ngbDatepicker" container="body">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="dStart.toggle()" type="button"><i
+                      class="feather icon-calendar"></i></button>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="exampleInputEmail1">Data final</label>
-              <input type="date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                placeholder="Enter email" formControlName="endDate">
+              <div class="input-group">
+                <input class="form-control" placeholder="Selecione a data final" name="dp" formControlName="endDate"
+                  ngbDatepicker #dEnd="ngbDatepicker" container="body">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="dEnd.toggle()" type="button"><i
+                      class="feather icon-calendar"></i></button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
