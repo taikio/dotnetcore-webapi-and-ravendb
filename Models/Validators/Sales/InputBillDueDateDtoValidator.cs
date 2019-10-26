@@ -8,8 +8,10 @@ namespace dotnetcore_webapi_and_ravendb.Models.Validators.Sales
     {
         public InputBillDueDateDtoValidator()
         {
-            RuleFor(x => x.DueDate).NotNull().GreaterThanOrEqualTo(DateTime.Now.Date);
-            RuleFor(x => x.Id).NotEmpty();
+            RuleFor(x => x.DueDate).NotNull().GreaterThanOrEqualTo(DateTime.Now.Date)
+                .WithMessage("A data de vencimento deve ser maior ou igual a data atual");
+            RuleFor(x => x.Id).NotEmpty()
+                .WithMessage("O ID do lançamento Financeiro precisa ser informado");
         }
     }
 }

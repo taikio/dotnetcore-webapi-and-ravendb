@@ -10,7 +10,7 @@
               <label for="exampleInputEmail1">Data inicial</label>
               <div class="input-group">
                 <input class="form-control" placeholder="Selecione a data inicial" name="dpStart"
-                  formControlName="startDate" ngbDatepicker #dStart="ngbDatepicker" container="body">
+                  formControlName="startDate" ngbDatepicker #dStart="ngbDatepicker" container="body" readonly>
                 <div class="input-group-append">
                   <button class="btn btn-outline-secondary" (click)="dStart.toggle()" type="button"><i
                       class="feather icon-calendar"></i></button>
@@ -23,7 +23,7 @@
               <label for="exampleInputEmail1">Data final</label>
               <div class="input-group">
                 <input class="form-control" placeholder="Selecione a data final" name="dp" formControlName="endDate"
-                  ngbDatepicker #dEnd="ngbDatepicker" container="body">
+                  ngbDatepicker #dEnd="ngbDatepicker" container="body" readonly>
                 <div class="input-group-append">
                   <button class="btn btn-outline-secondary" (click)="dEnd.toggle()" type="button"><i
                       class="feather icon-calendar"></i></button>
@@ -92,7 +92,7 @@
       <br>
 
       <div class="row">
-        <ag-grid-angular style="width: 100%; min-height: 400px;" class="ag-theme-balham" [rowData]="rowData | async"
+        <ag-grid-angular style="width: 100%; min-height: 400px;" class="ag-theme-material" [rowData]="rowData | async"
           [columnDefs]="columnDefs" [rowSelection]="rowSelection" (rowSelected)="onRowSelected($event)">
         </ag-grid-angular>
       </div>

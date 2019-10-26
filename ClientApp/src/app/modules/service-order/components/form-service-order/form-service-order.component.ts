@@ -28,6 +28,7 @@ export class FormServiceOrderComponent implements OnInit {
     this.serviceOrderForm = this.fb.group({
       description: ['', [
         Validators.required,
+        Validators.pattern('[a-zA-Z]{8,}')
       ]],
       customerId: ['', [
         Validators.required,

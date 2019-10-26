@@ -240,3 +240,9 @@ select-dropdown .selected.highlighted {
 .perfect-margin {
   margin-right: 1em;
 }
+
+.custom-input:invalid, .custom-input.ng-invalid.ng-dirty {
+  border-color:#ff5370;
+  padding-right: calc((1em + .75rem) * 3 / 4 + 1.95rem);
+  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") right .95rem center/8px 10px no-repeat,url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23FF5370' viewBox='-2 -2 7 7'%3e%3cpath stroke='%23FF5370' d='M0 0l3 3m0-3L0 3'/%3e%3ccircle r='.5'/%3e%3ccircle cx='3' r='.5'/%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E") center right 1.95rem/calc(.75em + .375rem) calc(.75em + .375rem) no-repeat #fff;
+}

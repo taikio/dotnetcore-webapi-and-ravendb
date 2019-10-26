@@ -4,6 +4,7 @@ import { LookupService } from 'src/app/modules/lookup/services/lookup.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { BillService } from '../../services/bill.service';
+import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-change-bill',
@@ -18,7 +19,7 @@ export class ChangeBillComponent implements OnInit {
   customers: Observable<any>;
 
   paymentId: string;
-  dueDate: string;
+  dueDate: NgbDate;
   value: number;
 
   constructor(
@@ -28,6 +29,7 @@ export class ChangeBillComponent implements OnInit {
   ) { }
 
   save() {
+    
     if (this.type === 'payment' && this.value) {
       this.billService.changePaymentMethod(this.idBill, this.paymentId).subscribe(
         (sucess) => {
@@ -40,14 +42,19 @@ export class ChangeBillComponent implements OnInit {
         }
       );
     } else if (this.type === 'duedate' && this.dueDate) {
-      this.billService.changeDueDate(this.idBill, this.dueDate).subscribe(
+
+      const formattedDate: string = this.getStringDateFromNgbDate(this.dueDate);
+
+      this.billService.changeDueDate(this.idBill, formattedDate).subscribe(
         (sucess) => {
           Swal.fire('Sucesso...', 'Data de vencimento alterada com sucesso!', 'success');
           this.activeModal.close();
         },
         (error) => {
-          Swal.fire('Opps...', error.error ? error.error : 'Ocorreu uma falha ao alterar a data de vencimento!', 'error');
-          console.log('Falha ao cadastrar o lançamento', error);
+          // Swal.fire('Opps...', 'Ocorreu uma falha ao alterar a data de vencimento!', 'error');
+          // Swal.fire({type: 'error', title: 'Oops...', text: 'Falha ao alterar a data de vencimento'});
+          console.log('Falha ao cadastrar o lançamento');
+          this.activeModal.close();
         }
       );
     } else if (this.type === 'value' && this.value) {
@@ -92,7 +99,14 @@ export class ChangeBillComponent implements OnInit {
     );
   }
 
+  getStringDateFromNgbDate(ngb: NgbDate) {
+    return `${ngb.year}-${ngb.month}-${ngb.day}`;
+  }
+
   ngOnInit() {
+    // const today = new Date(Date.now());
+    // this.dueDate = new NgbDate(today.getFullYear(), today.getMonth(), today.getDay());
+
     if (this.type === 'payment') {
       this.customers = this.lookup.getCustomers();
     }

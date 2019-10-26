@@ -14,6 +14,8 @@ import {
   Routes,
   RouterModule
 } from '@angular/router';
+import { NgxCurrencyModule } from 'ngx-currency';
+
 import { FormServiceOrderComponent } from './components/form-service-order/form-service-order.component';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -48,6 +50,7 @@ const routes: Routes = [{
     RouterModule.forChild(routes),
     AgGridModule.withComponents([]),
     NgbModule,
+    NgxCurrencyModule
   ],
   entryComponents: [ChangeServiceOrderComponent],
   exports: [RouterModule, ChangeServiceOrderComponent]

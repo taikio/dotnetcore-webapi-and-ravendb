@@ -30,6 +30,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
+
         if (error && error.status === 401) {
           // 401 errors are most likely going to be because we have an expired token that we need to refresh.
           if (this.refreshTokenInProgress) {
@@ -56,6 +57,13 @@ export class AuthInterceptor implements HttpInterceptor {
               finalize(() => this.refreshTokenInProgress = false)
             );
           }
+        } else if (error && error.status === 400) {
+          console.log('erro do servidor', error.error);
+
+          // const validationErrorDictionary = JSON.parse(error.error);
+
+          // console.log('erro do servidor', validationErrorDictionary);
+
         } else {
           return throwError(error);
         }

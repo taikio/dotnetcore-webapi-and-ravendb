@@ -32,9 +32,11 @@ export class FormCustomerComponent implements OnInit {
       ]],
       cpf: ['', [
         Validators.required,
+        Validators.pattern('[0-9]{11}')
       ]],
       email: ['', [
         Validators.required,
+        Validators.email
       ]],
     });
   }

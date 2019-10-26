@@ -8,6 +8,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { QueryBillsComponent } from './components/query-bills/query-bills.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { NgbModule, NgbDropdownModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxCurrencyModule } from 'ngx-currency';
 import { ChangeBillComponent } from './components/change-bill/change-bill.component';
 
 const routes: Routes = [{
@@ -38,6 +39,7 @@ const routes: Routes = [{
     NgbModule,
     NgbDatepickerModule,
     NgbDropdownModule,
+    NgxCurrencyModule
   ],
   exports: [
     RouterModule

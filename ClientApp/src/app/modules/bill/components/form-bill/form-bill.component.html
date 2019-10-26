@@ -21,7 +21,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon3">R$</span>
               </div>
-              <input type="number" class="form-control" id="value" aria-describedby="value" formControlName="value">
+              <input type="text" class="form-control custom-input" id="value" aria-describedby="value" formControlName="value" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }">
             </div>
           </div>
         </div>
@@ -32,7 +32,7 @@
               <label for="exampleInputEmail1">Data de vencimento</label>
               <div class="input-group">
                 <input class="form-control" placeholder="Informe a data de vencimento" name="dpStart"
-                  formControlName="dueDate" ngbDatepicker #dStart="ngbDatepicker" container="body">
+                  formControlName="dueDate" ngbDatepicker #dStart="ngbDatepicker" container="body" readonly>
                 <div class="input-group-append">
                   <button class="btn btn-outline-secondary" (click)="dStart.toggle()" type="button"><i
                       class="feather icon-calendar"></i></button>

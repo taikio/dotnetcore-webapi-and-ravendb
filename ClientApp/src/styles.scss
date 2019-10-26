@@ -3,4 +3,9 @@
 @import "scss/style";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import "~ag-grid-community/dist/styles/ag-grid.css";
-@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+// @import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+@import '~ag-grid-community/src/styles/ag-theme-material/sass/ag-theme-material';
+
+.ngb-dp-body {
+    z-index: 1085 !important;
+}

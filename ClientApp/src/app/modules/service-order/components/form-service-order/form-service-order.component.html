@@ -1,21 +1,20 @@
 <div class="row">
   <div class="col-sm-12">
     <app-card cardTitle="Nova ordem de serviço" [options]="false">
-      <form [formGroup]="serviceOrderForm">
+      <form [formGroup]="serviceOrderForm" novalidate>
 
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label for="exampleInputEmail1">Descrição</label>
-              <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Digite uma descrição"
+              <input type="text" class="form-control custom-input" aria-describedby="emailHelp" placeholder="Digite uma descrição"
                 formControlName="description">
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="exampleFormControlSelect1">Cliente</label>
-              <ng-select [items]="customers | async" bindLabel="name" bindValue="id" placeholder="Selecione"
-                formControlName="customerId">
+              <ng-select [items]="customers | async" bindLabel="name" bindValue="id" placeholder="Selecione" formControlName="customerId">
               </ng-select>
             </div>
           </div>
@@ -39,7 +38,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">R$</span>
               </div>
-              <input type="text" class="form-control" aria-describedby="basic-addon3" formControlName="value">
+              <input type="text" class="form-control custom-input" aria-describedby="basic-addon3" formControlName="value" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }">
             </div>
           </div>
         </div>
@@ -49,8 +48,9 @@
             <div class="form-group">
               <label for="exampleInputEmail1">Data de vencimento</label>
               <div class="input-group">
-                <input class="form-control" placeholder="Informe a data de vencimento" name="dpStart"
-                  formControlName="dueDate" ngbDatepicker #dStart="ngbDatepicker" container="body">
+                <input class="form-control custom-input" placeholder="Informe a data de vencimento" name="dpStart"
+                  formControlName="dueDate" ngbDatepicker #dStart="ngbDatepicker" container="body"
+                  readonly>
                 <div class="input-group-append">
                   <button class="btn btn-outline-secondary" (click)="dStart.toggle()" type="button"><i
                       class="feather icon-calendar"></i></button>

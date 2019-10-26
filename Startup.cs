@@ -20,6 +20,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Raven.Client.Documents;
 using System.IO;
+using FluentValidation;
 
 namespace dotnetcore_webapi_and_ravendb
 {
@@ -68,7 +69,7 @@ namespace dotnetcore_webapi_and_ravendb
 
             #endregion
             
-
+            
             // This will instantiate a communication channel between application and the RavenDB server instance.
             services.AddSingleton<IDocumentStore>(provider =>
             {
