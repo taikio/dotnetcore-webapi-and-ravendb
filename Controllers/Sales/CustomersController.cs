@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using dotnetcore_webapi_and_ravendb.Contracts.Sales;
 using dotnetcore_webapi_and_ravendb.Models.Dtos.SalesDtos;
@@ -76,6 +77,97 @@ namespace dotnetcore_webapi_and_ravendb.Controllers.Sales
             {
 
                 return BadRequest();
+            }
+        }
+        
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> Name([FromBody] InputCustomerNameDto customerDto)
+        {
+            try
+            {
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                await _customerProvider.ChangeCustomerName(customerDto.Id, customerDto.Name);
+
+                return Ok();
+            }
+            catch (System.Exception)
+            {
+
+                return BadRequest();
+            }
+        }
+        
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> ShortName([FromBody] InputCustomerShortnameDto customerDto)
+        {
+            try
+            {
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                await _customerProvider.ChangeCustomerShortName(customerDto.Id, customerDto.ShortName);
+
+                return Ok();
+            }
+            catch (System.Exception)
+            {
+
+                return BadRequest();
+            }
+        }
+        
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> Cpf([FromBody] InputCustomerCpfDto customerDto)
+        {
+            try
+            {
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                await _customerProvider.ChangeCustomerCpf(customerDto.Id, customerDto.Cpf);
+
+                return Ok();
+            }
+            catch (System.Exception)
+            {
+
+                return BadRequest();
+            }
+        }
+        
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Cancel(string id)
+        {
+
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                await _customerProvider.DeleteCustomer(id);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

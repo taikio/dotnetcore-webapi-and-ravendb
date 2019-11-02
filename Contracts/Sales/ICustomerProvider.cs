@@ -11,9 +11,12 @@ namespace dotnetcore_webapi_and_ravendb.Contracts.Sales
 
         Task ChangeCustomerEmail(string id, string emailAddress);
 
-        Task DeleteCustomer(Customer customer);
+        Task DeleteCustomer(string id);
 
         Task<List<Customer>> GetAllCustomers();
-        
+        Task ChangeCustomerName(string id, string name);
+        Task ChangeCustomerShortName(string id, string shortName);
+        Task ChangeCustomerCpf(string id, string cpf);
+
     }
 }

@@ -7,6 +7,8 @@ import { SharedModule } from '../shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { QueryCustomersComponent } from './components/query-customers/query-customers.component';
 import { AgGridModule } from 'ag-grid-angular';
+import { ChangeCustomerComponent } from './components/change-customer/change-customer.component';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [{
   path: '',
@@ -23,7 +25,8 @@ const routes: Routes = [{
 @NgModule({
   declarations: [
     FormCustomerComponent,
-    QueryCustomersComponent
+    QueryCustomersComponent,
+    ChangeCustomerComponent
   ],
   imports: [
     CommonModule,
@@ -31,10 +34,12 @@ const routes: Routes = [{
     NgSelectModule,
     RouterModule.forChild(routes),
     SharedModule,
-    AgGridModule.withComponents([])
+    AgGridModule.withComponents([]),
+    NgbDropdownModule
   ],
   exports: [
     RouterModule
-  ]
+  ],
+  entryComponents: [ChangeCustomerComponent]
 })
 export class CustomerModule { }

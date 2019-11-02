@@ -8,11 +8,16 @@ namespace dotnetcore_webapi_and_ravendb.Models.Validators.Sales
     {
         public InputServiceOrderDtoValidator()
         {
-            RuleFor(x => x.Description).NotEmpty().Length(0, 150);
-            RuleFor(x => x.CustomerId).NotEmpty();
-            RuleFor(x => x.PaymentMethodSysId).NotEmpty();
-            RuleFor(x => x.Value).NotEmpty().GreaterThan(0);
-            RuleFor(x => x.DueDate).NotEmpty().NotNull().GreaterThanOrEqualTo(DateTime.Now.Date);
+            RuleFor(x => x.Description).NotEmpty().Length(0, 150)
+                .WithMessage("É necessário informar uma descrição");
+            RuleFor(x => x.CustomerId).NotEmpty()
+                .WithMessage("O ID do cliente precisa ser informado");
+            RuleFor(x => x.PaymentMethodSysId).NotEmpty()
+                .WithMessage("O ID do meio de pagamento precisa ser informado");
+            RuleFor(x => x.Value).NotEmpty().GreaterThan(0)
+                .WithMessage("O valor deve ser maior que 0");
+            RuleFor(x => x.DueDate).NotEmpty().NotNull().GreaterThanOrEqualTo(DateTime.Now.Date)
+                .WithMessage("A data de vencimento deve ser maior ou igual a data atual");
         }
     }
 }

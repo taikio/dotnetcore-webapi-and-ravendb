@@ -11,10 +11,14 @@ namespace dotnetcore_webapi_and_ravendb.Models.Validators.Sales
     {
         public InputBillDtoValidator()
         {
-            RuleFor(x => x.PaymentMethodSysId).NotEmpty();
-            RuleFor(x => x.Value).NotNull().GreaterThan(0);
-            RuleFor(x => x.DueDate).NotNull().GreaterThanOrEqualTo(DateTime.Now.Date);
-            RuleFor(x => x.Description).NotEmpty();
+            RuleFor(x => x.PaymentMethodSysId).NotEmpty()
+                .WithMessage("É necessário selecionar um meio de pagamento");
+            RuleFor(x => x.Value).NotNull().GreaterThan(0)
+                .WithMessage("O valor deve ser maior que 0");
+            RuleFor(x => x.DueDate).NotNull().GreaterThanOrEqualTo(DateTime.Now.Date)
+                .WithMessage("A data de vencimento deve ser maior que a data atual");
+            RuleFor(x => x.Description).NotEmpty()
+                .WithMessage("É necessário informar uma descrição para a orde de serviço");
         }
     }
 }

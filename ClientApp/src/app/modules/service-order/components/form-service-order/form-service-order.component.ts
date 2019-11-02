@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { LookupService } from 'src/app/modules/lookup/services/lookup.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ServiceOrderService, ServiceOrder, NewServiceOrderDto } from '../../services/service-order.service';
@@ -12,23 +12,26 @@ import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './form-service-order.component.html',
   styleUrls: ['./form-service-order.component.scss']
 })
-export class FormServiceOrderComponent implements OnInit {
+export class FormServiceOrderComponent implements OnInit, OnDestroy {
 
   serviceOrderForm: FormGroup;
   paymentMethods: Observable<any>;
   customers: Observable<any>;
+  subscriptions: Array<Subscription>;
 
   constructor(
     private lookup: LookupService,
     private fb: FormBuilder,
     private serviceOrder: ServiceOrderService,
-    private router: Router) { }
+    private router: Router
+    ) {
+      this.subscriptions = new Array<Subscription>();
+    }
 
   private buildForm() {
     this.serviceOrderForm = this.fb.group({
       description: ['', [
         Validators.required,
-        Validators.pattern('[a-zA-Z]{8,}')
       ]],
       customerId: ['', [
         Validators.required,
@@ -55,22 +58,21 @@ export class FormServiceOrderComponent implements OnInit {
     const newService = this.serviceOrderForm.value as NewServiceOrderDto;
     newService.dueDate = this.getStringDateFromNgbDate(this.serviceOrderForm.value.dueDate);
 
-    this.serviceOrder.newServiceOrder(newService).subscribe(
-      (sucess) => {
-        Swal.fire('Sucesso...', 'Ordem de serviço cadastrada com sucesso', 'success');
-        if (!continueForm) {
-          return this.router.navigate(['/dashboard']);
+    this.subscriptions.push(
+      this.serviceOrder.newServiceOrder(newService).subscribe(
+        (sucess) => {
+          Swal.fire('Sucesso...', 'Ordem de serviço cadastrada com sucesso', 'success');
+          if (!continueForm) {
+            return this.router.navigate(['/dashboard']);
+          }
+          this.serviceOrderForm.reset();
         }
-        this.serviceOrderForm.reset();
-      },
-      (error) => {
-        Swal.fire('Opps...', 'Ocorreu uma falha ao cadastrar a ordem de serviço!', 'error');
-        console.log('Falha ao cadastrar ordem de serviço, error');
-      }
+      )
     );
+
   }
 
-  getStringDateFromNgbDate(ngb: NgbDate){
+  getStringDateFromNgbDate(ngb: NgbDate) {
     return `${ngb.year}-${ngb.month}-${ngb.day}`;
   }
 
@@ -78,6 +80,12 @@ export class FormServiceOrderComponent implements OnInit {
     this.buildForm();
     this.paymentMethods = this.lookup.getPaymentMethod();
     this.customers = this.lookup.getCustomers();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => {
+      sub.unsubscribe();
+    });
   }
 
 }

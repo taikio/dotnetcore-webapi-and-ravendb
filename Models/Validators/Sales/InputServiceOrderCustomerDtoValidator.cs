@@ -11,8 +11,10 @@ namespace dotnetcore_webapi_and_ravendb.Models.Validators.Sales
     {
         public InputServiceOrderCustomerDtoValidator()
         {
-            RuleFor(x => x.ServiceOrderId).NotEmpty();
-            RuleFor(x => x.CustomerId).NotEmpty();
+            RuleFor(x => x.ServiceOrderId).NotEmpty()
+                .WithMessage("O ID da ordem de serviço precisa ser informado");
+            RuleFor(x => x.CustomerId).NotEmpty()
+                .WithMessage("O ID do cliente precisa ser informado");
         }
     }
 }

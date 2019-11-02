@@ -92,8 +92,15 @@
       <br>
 
       <div class="row">
-        <ag-grid-angular style="width: 100%; min-height: 400px;" class="ag-theme-material" [rowData]="rowData | async"
-          [columnDefs]="columnDefs" [rowSelection]="rowSelection" (rowSelected)="onRowSelected($event)">
+        <ag-grid-angular 
+          style="width: 100%; min-height: 400px;" 
+          class="ag-theme-material" 
+          [rowData]="rowData | async"
+          [columnDefs]="columnDefs" 
+          [rowSelection]="rowSelection" 
+          (rowSelected)="onRowSelected($event)"
+          [animateRows]=true
+          [enableColResize]=true>
         </ag-grid-angular>
       </div>
 

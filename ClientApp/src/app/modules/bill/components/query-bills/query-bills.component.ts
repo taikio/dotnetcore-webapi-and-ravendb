@@ -41,7 +41,8 @@ export class QueryBillsComponent implements OnInit, OnDestroy {
     { headerName: 'Meio de Pagamento', field: 'paymentMethod.description', sortable: true, filter: true },
     { headerName: 'Valor R$', field: 'value', sortable: true, filter: true, valueFormatter: this.agGridHelper.currencyFormatter },
     { headerName: 'Destino', field: 'destiny', sortable: true, filter: true },
-    { headerName: 'Status', field: 'status', sortable: true, filter: true },
+    { headerName: 'Status', field: 'computedStatus', sortable: true, filter: true },
+    { headerName: 'Descrição', field: 'description', sortable: true, filter: false },
     {
       headerName: 'Pago?', field: 'paid', sortable: true, filter: true, cellRenderer: params => {
         return `<input type='checkbox' ${params.value ? 'checked' : ''} />`;

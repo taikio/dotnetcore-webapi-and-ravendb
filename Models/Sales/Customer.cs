@@ -28,6 +28,21 @@ namespace dotnetcore_webapi_and_ravendb.Models.Sales
             this.Email = newEmail;
         }
 
+        public void ChangeName(string newName)
+        {
+            this.Name = newName;
+        }
+
+        public void ChangeShortName(string newShortName)
+        {
+            this.ShortName = newShortName;
+        }
+
+        public void ChangeCpf(string newCpf)
+        {
+            this.Cpf = newCpf;
+        }
+
         #endregion
     }
 }

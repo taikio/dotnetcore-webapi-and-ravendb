@@ -23,6 +23,7 @@ export interface NewBillDto {
   value: number;
   destiny: 'R' | 'P';
   dueDate: string;
+  description: string;
 }
 
 export interface AccountBalance {

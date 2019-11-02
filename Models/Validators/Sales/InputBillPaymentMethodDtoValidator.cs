@@ -7,8 +7,10 @@ namespace dotnetcore_webapi_and_ravendb.Models.Validators.Sales
     {
         public InputBillPaymentMethodDtoValidator()
         {
-            RuleFor(x => x.PaymentMethodSysId).NotEmpty();
-            RuleFor(x => x.Id).NotEmpty();
+            RuleFor(x => x.PaymentMethodSysId).NotEmpty()
+                .WithMessage("É necessário informar um meio de pagamento");
+            RuleFor(x => x.Id).NotEmpty()
+                .WithMessage("O ID do lançamento Financeiro precisa ser informado");
         }
     }
 }

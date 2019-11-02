@@ -53,43 +53,43 @@
     <app-card [hidHeader]="true" cardClass="bg-c-red order-card">
       <h6 class="text-white">A receber</h6>
       <h2 class="text-right text-white"><i
-          class="fontawesome fas fa-cash-register float-left"></i><span>R${{(accountBalance|async)?.incomingPendingValue}}</span>
+          class="fontawesome fas fa-cash-register float-left"></i><span>R${{(accountBalance)?.incomingPendingValue}}</span>
       </h2>
-      <p class="m-b-0">Já recebido<span class="float-right">R${{(accountBalance|async)?.incomingPaidValue}}</span></p>
+      <p class="m-b-0">Já recebido<span class="float-right">R${{(accountBalance)?.incomingPaidValue}}</span></p>
     </app-card>
   </div>
   <div class="col-md-6 col-xl-3">
     <app-card [hidHeader]="true" cardClass="bg-c-green order-card">
       <h6 class="text-white">A pagar</h6>
       <h2 class="text-right text-white"><i
-          class="fontawesome fas fa-hand-holding-usd float-left"></i><span>R${{(accountBalance|async)?.outgoingPendingValue}}</span>
+          class="fontawesome fas fa-hand-holding-usd float-left"></i><span>R${{(accountBalance)?.outgoingPendingValue}}</span>
       </h2>
-      <p class="m-b-0">Já pago<span class="float-right">R${{(accountBalance|async)?.outgoingPaidValue}}</span></p>
+      <p class="m-b-0">Já pago<span class="float-right">R${{(accountBalance)?.outgoingPaidValue}}</span></p>
     </app-card>
   </div>
   <div class="col-md-6 col-xl-3">
     <app-card [hidHeader]="true" cardClass="bg-c-yellow order-card">
       <h6 class="text-white">Contas a receber</h6>
       <h2 class="text-right text-white"><i
-          class="fontawesome fas fa-shopping-cart float-left"></i><span>{{(accountBalance|async)?.incomingPendingQuantity}}</span>
+          class="fontawesome fas fa-shopping-cart float-left"></i><span>{{(accountBalance)?.incomingPendingQuantity}}</span>
       </h2>
-      <p class="m-b-0">Já recebido<span class="float-right">{{(accountBalance|async)?.incomingPaidQuantity}}</span></p>
+      <p class="m-b-0">Já recebido<span class="float-right">{{(accountBalance)?.incomingPaidQuantity}}</span></p>
     </app-card>
   </div>
   <div class="col-md-6 col-xl-3">
     <app-card [hidHeader]="true" cardClass="bg-c-red order-card">
       <h6 class="text-white">Contas a pagar</h6>
       <h2 class="text-right text-white"><i
-          class="fontawesome fas fa-hand-holding-usd float-left"></i><span>{{(accountBalance|async)?.outgoingPendingQuantity}}</span>
+          class="fontawesome fas fa-hand-holding-usd float-left"></i><span>{{(accountBalance)?.outgoingPendingQuantity}}</span>
       </h2>
-      <p class="m-b-0">Já pagas<span class="float-right">{{(accountBalance|async)?.outgoingPaidQuantity}}</span></p>
+      <p class="m-b-0">Já pagas<span class="float-right">{{(accountBalance)?.outgoingPaidQuantity}}</span></p>
     </app-card>
   </div>
   <div class="col-md-6 col-xl-3">
     <app-card [hidHeader]="true" cardClass="bg-c-yellow order-card">
       <h6 class="text-white">Balanço</h6>
       <h2 class="text-right text-white"><i
-          class="fontawesome fas fa-balance-scale float-left"></i><span>R${{(accountBalance|async)?.incomingOutgoingBalance}}</span>
+          class="fontawesome fas fa-balance-scale float-left"></i><span>R${{(accountBalance)?.incomingOutgoingBalance}}</span>
       </h2>
       <!-- <p class="m-b-0">Já pagas<span class="float-right">7</span></p> -->
     </app-card>
@@ -98,7 +98,7 @@
     <app-card [hidHeader]="true" cardClass="bg-c-blue order-card">
       <h6 class="text-white">Projeção</h6>
       <h2 class="text-right text-white"><i
-          class="fontawesome fas fa-chart-line float-left"></i><span>R${{(accountBalance|async)?.incomingOutgoingProjection}}</span>
+          class="fontawesome fas fa-chart-line float-left"></i><span>R${{(accountBalance)?.incomingOutgoingProjection}}</span>
       </h2>
       <!-- <p class="m-b-0">Já pagas<span class="float-right">7</span></p> -->
     </app-card>

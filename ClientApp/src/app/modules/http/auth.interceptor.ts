@@ -59,11 +59,24 @@ export class AuthInterceptor implements HttpInterceptor {
           }
         } else if (error && error.status === 400) {
           console.log('erro do servidor', error.error);
+          let serverErrors = '';
 
+          for (let key in error.error) {
+
+            if (serverErrors.length > 0){
+              serverErrors += '; ';
+            }
+            serverErrors += error.error[key];
+
+          }
+
+          Swal.fire('Opps...', serverErrors, 'error');
           // const validationErrorDictionary = JSON.parse(error.error);
 
           // console.log('erro do servidor', validationErrorDictionary);
 
+          /* After hadle the error continue the request life cycle */
+          return next.handle(req);
         } else {
           return throwError(error);
         }
@@ -79,7 +92,6 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private addAuthenticationToken(request: HttpRequest<any>): HttpRequest<any> {
-
     // If we do not have a token yet then we should not set the header.
     // Here we could first retrieve the token from where we store it.
     if (!this.auth.isLogged()) {

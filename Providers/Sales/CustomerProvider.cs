@@ -40,7 +40,7 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
 
                 if (customer == null)
                 {
-                    throw new ArgumentException("N�o foi encontrado um cliente com o ID informado!");
+                    throw new ArgumentException("Não foi encontrado um cliente com o ID informado!");
                 }
 
                 customer.ChangeEmail(emailAddress);
@@ -54,12 +54,12 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
             }
         }
 
-        public async Task DeleteCustomer(Customer customer)
+        public async Task DeleteCustomer(string id)
         {
             
             try
             {
-                await _ravenDatabaseProvider.DeleteEntity(customer.Id);
+                await _ravenDatabaseProvider.DeleteEntity(id);
             }
             catch (System.Exception ex)
             {
@@ -73,6 +73,75 @@ namespace dotnetcore_webapi_and_ravendb.Providers.Sales
             var usersList = await _ravenDatabaseProvider.GetEntities<Customer>();
 
             return usersList;
+        }
+        
+        public async Task ChangeCustomerName(string id, string name)
+        {
+            
+            try
+            {
+                var customer = await _ravenDatabaseProvider.GetEntity<Customer>(id);
+
+                if (customer == null)
+                {
+                    throw new ArgumentException("Não foi encontrado um cliente com o ID informado!");
+                }
+
+                customer.ChangeName(name);
+
+                await _ravenDatabaseProvider.UpdateEntity(customer.Id, customer);
+            }
+            catch (System.Exception ex)
+            {
+                
+                throw ex;
+            }
+        }
+        
+        public async Task ChangeCustomerShortName(string id, string shortName)
+        {
+            
+            try
+            {
+                var customer = await _ravenDatabaseProvider.GetEntity<Customer>(id);
+
+                if (customer == null)
+                {
+                    throw new ArgumentException("Não foi encontrado um cliente com o ID informado!");
+                }
+
+                customer.ChangeShortName(shortName);
+
+                await _ravenDatabaseProvider.UpdateEntity(customer.Id, customer);
+            }
+            catch (System.Exception ex)
+            {
+                
+                throw ex;
+            }
+        }
+        
+        public async Task ChangeCustomerCpf(string id, string cpf)
+        {
+            
+            try
+            {
+                var customer = await _ravenDatabaseProvider.GetEntity<Customer>(id);
+
+                if (customer == null)
+                {
+                    throw new ArgumentException("Não foi encontrado um cliente com o ID informado!");
+                }
+
+                customer.ChangeCpf(cpf);
+
+                await _ravenDatabaseProvider.UpdateEntity(customer.Id, customer);
+            }
+            catch (System.Exception ex)
+            {
+                
+                throw ex;
+            }
         }
     }
 }

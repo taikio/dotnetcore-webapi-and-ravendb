@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { LookupService } from 'src/app/modules/lookup/services/lookup.service';
 import Swal from 'sweetalert2';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
@@ -12,16 +12,19 @@ import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './form-bill.component.html',
   styleUrls: ['./form-bill.component.scss']
 })
-export class FormBillComponent implements OnInit {
+export class FormBillComponent implements OnInit, OnDestroy {
 
   billForm: FormGroup;
   paymentMethods: Observable<any>;
+  subscriptions: Array<Subscription>;
 
   constructor(
     private lookup: LookupService,
     private fb: FormBuilder,
     private billService: BillService,
-    private router: Router) {
+    private router: Router
+    ) {
+      this.subscriptions = new Array<Subscription>();
   }
 
   private buildForm() {
@@ -38,6 +41,9 @@ export class FormBillComponent implements OnInit {
       dueDate: ['', [
         Validators.required,
       ]],
+      description: ['', [
+        Validators.required,
+      ]]
     });
   }
 
@@ -50,19 +56,18 @@ export class FormBillComponent implements OnInit {
     const newService = this.billForm.value as NewBillDto;
     newService.dueDate = this.getStringDateFromNgbDate(this.billForm.value.dueDate);
 
-    this.billService.new(newService).subscribe(
-      (sucess) => {
-        Swal.fire('Sucesso...', 'Lançamento cadastrado com sucesso', 'success');
-        if (!continueForm) {
-          return this.router.navigate(['/dashboard']);
+    this.subscriptions.push(
+      this.billService.new(newService).subscribe(
+        (sucess) => {
+          Swal.fire('Sucesso...', 'Lançamento cadastrado com sucesso', 'success');
+          if (!continueForm) {
+            return this.router.navigate(['/dashboard']);
+          }
+          this.billForm.reset();
         }
-        this.billForm.reset();
-      },
-      (error) => {
-        Swal.fire('Opps...', 'Ocorreu uma falha ao cadastrar o lançamento!', 'error');
-        console.log('Falha ao cadastrar o lançamento, error');
-      }
+      )
     );
+
   }
 
   getStringDateFromNgbDate(ngb: NgbDate){
@@ -72,6 +77,12 @@ export class FormBillComponent implements OnInit {
   ngOnInit() {
     this.buildForm();
     this.paymentMethods = this.lookup.getPaymentMethod();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => {
+      sub.unsubscribe();
+    });
   }
 
 }

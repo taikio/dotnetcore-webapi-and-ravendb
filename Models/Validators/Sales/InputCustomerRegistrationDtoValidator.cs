@@ -7,9 +7,12 @@ namespace dotnetcore_webapi_and_ravendb.Models.Validators.Sales
     {
         public InputCustomerRegistrationDtoValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().Length(0, 255);
-            RuleFor(x => x.ShortName).NotEmpty().Length(0, 30);
-            RuleFor(x => x.Cpf).NotEmpty().Length(11);
+            RuleFor(x => x.Name).NotEmpty().Length(0, 255)
+                .WithMessage("Informe o nome do usuário");
+            RuleFor(x => x.ShortName).NotEmpty().Length(0, 30)
+                .WithMessage("Informe o nome abreviado do usuário");
+            RuleFor(x => x.Cpf).NotEmpty().Length(11)
+                .WithMessage("Informe o cpf do usuário");
             
         }
     }

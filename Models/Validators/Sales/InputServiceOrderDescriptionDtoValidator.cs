@@ -11,8 +11,10 @@ namespace dotnetcore_webapi_and_ravendb.Models.Validators.Sales
     {
         public InputServiceOrderDescriptionDtoValidator()
         {
-            RuleFor(x => x.ServiceOrderId).NotEmpty();
-            RuleFor(x => x.Description).NotEmpty();
+            RuleFor(x => x.ServiceOrderId).NotEmpty()
+                .WithMessage("O ID da ordem de serviço precisa ser informado");
+            RuleFor(x => x.Description).NotEmpty()
+                .WithMessage("É necessário informar uma descrição");
         }
     }
 }
