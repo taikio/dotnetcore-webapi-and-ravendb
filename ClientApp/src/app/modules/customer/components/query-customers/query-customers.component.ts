@@ -32,7 +32,7 @@ export class QueryCustomersComponent implements OnInit, OnDestroy {
   rowData: Observable<any>;
   showSpinner = false;
   selectedRow: Customer;
-  private rowSelection;
+  rowSelection;
 
   columnDefs = [
     { headerName: 'ID Cliente', field: 'id', sortable: true, filter: true },
