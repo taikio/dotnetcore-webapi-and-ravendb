@@ -139,11 +139,11 @@ namespace dotnetcore_webapi_and_ravendb.Controllers
 
                 InputUserRegistrationDto dto = new InputUserRegistrationDto
                 {
-                    FirstName = "Welker",
-                    LastName = "Arantes",
-                    Email = "welker3101@gmail",
-                    Password = "taikio3101",
-                    ConfirmPassword = "taikio3101"
+                    FirstName = "Admin",
+                    LastName = "Developer",
+                    Email = "admin@mail.com",
+                    Password = "Admin102030",
+                    ConfirmPassword = "Admin102030"
                 };
                 
                 var userLoginId = LoginProvider.GenerateId(dto.Email);
